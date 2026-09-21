@@ -234,8 +234,8 @@ public class Scanner {
         // Consome aspa de fechamento
         advance();
 
-        // Lexema inclui as aspas originais
-        String lexeme = source.substring(startPos, pos);
+        // Lexema não inclui as aspas
+        String lexeme = source.substring(startPos + 1, pos -1);
 
         return new Token(TokenType.STRING_LIT, lexeme, startLine, startCol);
     }
