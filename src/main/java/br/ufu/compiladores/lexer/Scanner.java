@@ -84,79 +84,257 @@ public class Scanner {
     }
 
     // ------------------------------------------------------------------
-    //  AFDs — IMPLEMENTACAO SUA (esqueletos com roteiro)
+    //  MÉTODOS AUXILIARES DO SCANNER
     // ------------------------------------------------------------------
 
-    /**
-     * TOKEN 1/2 — Identificador ou palavra reservada.
-     * Regra: (letra | '_') (letra | digito | '_')*
-     *
-     * ROTEIRO DO AFD:
-     *   - marque a posicao inicial (linha/coluna do token) e o pos inicial;
-     *   - consuma enquanto peek() for letra, digito ou '_'  (maximal munch);
-     *   - extraia o lexema = source.substring(inicio, pos);
-     *   - TokenType t = ReservedWords.classify(lexeme);
-     *   - retorne new Token(t, lexeme, ...).
-     */
+    /* Helper para consumir sequências de dígitos que podem conter '_' */
+    /* Garante que não existam '_' consecutivos e que o bloco não termine com '_' */
+    private void consumeDigits(int startLine, int startCol) {
+        while (hasNext()) {
+            char c = peek();
+            if (isDigit(c)) {
+                advance();
+            } else if (c == '_') {
+                if (peekNext() == '_') {
+                    throw new LexicalError("Underscores consecutivos não são permitidos", startLine, startCol);
+                }
+                advance();
+            } else {
+                break;
+            }
+        }
+
+        if (source.charAt(pos - 1) == '_') {
+            throw new LexicalError("O caractere '_' deve estar estritamente entre dígitos", startLine, startCol);
+        }
+    }
+
+
+
+    // ------------------------------------------------------------------
+    //  AFDs 
+    // ------------------------------------------------------------------
+
     private Token scanIdentifierOrKeyword() {
-        // TODO (seu): implementar o AFD de identificador + consulta a ReservedWords.
-        throw new UnsupportedOperationException("scanIdentifierOrKeyword: implementar (Checkpoint 1)");
+
+        // 1. Marca ponto de partida (para saber onde o token começou)
+        int startPos = pos;
+        int startLine = line;
+        int startCol = col;
+
+        // 2. Laço de consumo (maximal munch)
+        while (hasNext()) {
+            char c = peek();
+
+            if (isLetter(c) || isDigit(c) || c == '_') {
+                advance();
+            } else {
+                break;
+            }
+        }
+
+        // 3. Recorta a string do texto original
+        String lexeme = source.substring(startPos, pos);
+
+        // 4. Classifica usando a tabela hash
+        TokenType type = ReservedWords.classify(lexeme);
+
+        // 5. Cria e devolve o novo objeto Token
+        return new Token(type, lexeme, startLine, startCol);
+
     }
 
-    /**
-     * TOKEN 5 — Literal numerico: INT_LIT ou DOUBLE_LIT.
-     * INT_LIT:    digito (digito | '_')*     ('_' apenas ENTRE digitos)
-     * DOUBLE_LIT: digito+ ('.' digito+)? (('e'|'E') ('+'|'-')? digito+)?
-     *
-     * ROTEIRO DO AFD:
-     *   - consuma a parte inteira (digitos, permitindo '_' entre digitos);
-     *     cuidado com '1_', '_1', '1__0' -> erro;
-     *   - se peek()=='.', tente a parte fracionaria: exige digito depois do ponto
-     *     ('3.' sozinho e' erro);
-     *   - se peek() e' 'e'/'E', tente o expoente: sinal opcional + digito+;
-     *   - o estado de aceitacao (com ou sem '.'/'e') define INT_LIT vs DOUBLE_LIT.
-     */
     private Token scanNumber() {
-        // TODO (seu): implementar o AFD de literais numericos.
-        throw new UnsupportedOperationException("scanNumber: implementar (Checkpoint 1)");
+        
+        int startPos = pos;
+        int startLine = line;
+        int startCol = col;
+
+        boolean isDouble = false; // é inteiro até encontrar '.' ou 'e/E'
+
+
+        // 1. Parte inteira
+        consumeDigits(startLine, startCol);
+
+        // 2. Parte fracionária
+        if (peek() == '.') {
+            isDouble = true;
+            advance();
+
+            if (!isDigit(peek())) {
+                throw new LexicalError("Formato inválido: esperado dígito após o ponto", startLine, startCol);
+            }
+
+            consumeDigits(startLine, startCol);
+        }
+
+        // 3. Notação científica
+        char c = peek();
+        if (c == 'e' || c == 'E') {
+            isDouble = true;
+            advance();
+
+            // sinal opcional depois do 'e'
+            char sign = peek();
+            if (sign == '+' || sign == '-') {
+                advance();
+            }
+
+            // exige pelo menos um dígito depois do 'e' / sinal
+            if (!isDigit(peek())) {
+                throw new LexicalError("Formato inválido: esperado dígito no expoente", startLine, startCol);
+            }
+
+            consumeDigits(startLine, startCol);
+        }
+
+        String lexeme = source.substring(startPos, pos);
+
+        if (lexeme.endsWith("_")) {
+            throw new LexicalError("Formato numérico inválido: não pode terminar com '_'", startLine, startCol);
+        }
+
+        TokenType type = isDouble ? TokenType.DOUBLE_LIT : TokenType.INT_LIT;
+
+        return new Token(type, lexeme, startLine, startCol);
     }
 
-    /**
-     * TOKEN 3 — String literal.
-     * Regra: " (qualquer caractere != ")* "
-     *
-     * ROTEIRO DO AFD:
-     *   - consuma a aspa de abertura;
-     *   - self-loop: consuma tudo que nao for '"';
-     *   - CASO DE ERRO: se chegar a '\n' ou ao EOF sem fechar -> LexicalError
-     *     (reporte a posicao; decida sua estrategia de recuperacao);
-     *   - consuma a aspa de fechamento;
-     *   - o lexeme pode ser so o conteudo (sem as aspas) — decisao sua, documente.
-     */
+
     private Token scanString() {
-        // TODO (seu): implementar o AFD de string + caso de erro.
-        throw new UnsupportedOperationException("scanString: implementar (Checkpoint 1)");
+
+        int startPos = pos;
+        int startLine = line;
+        int startCol = col;
+
+        // Consome a aspa de abertura
+        advance();
+
+        while (hasNext()) {
+            char c = peek();
+
+            // Erro: quebra de linha no meio da string
+            if (c == '\n') {
+                throw new LexicalError("String não fechada antes da quebra de linha", startLine, startCol);
+            }
+
+            // Fim da string
+            if (c == '"') {
+                break;
+            }
+
+            // Consome qualquer outro caractere da string
+            advance();
+        }
+
+        // Erro: chegou ao fim do arquivo sem fechar aspas
+        if (!hasNext()) {
+            throw new LexicalError("Fim de arquivo alcançado; string não fechada", startLine, startCol);
+        }
+
+        // Consome aspa de fechamento
+        advance();
+
+        // Lexema inclui as aspas originais
+        String lexeme = source.substring(startPos, pos);
+
+        return new Token(TokenType.STRING_LIT, lexeme, startLine, startCol);
     }
 
-    /**
-     * TOKEN 4 + pontuacao — Operadores e delimitadores.
-     *
-     * ATENCAO AO LOOKAHEAD (use peek()/peekNext(), nunca consuma sem decidir):
-     *   '*'  -> se o proximo for '*', e' POW (**); senao STAR
-     *   '='  -> se o proximo for '=', e' EQ_EQ (==); senao ASSIGN
-     *   '!'  -> se o proximo for '=', e' NEQ (!=); senao NOT
-     *   '<'  -> '<=' LE senao LT ;   '>' -> '>=' GE senao GT
-     *   '&'  -> exige '&&' (AND) ;   '|' -> exige '||' (OR)
-     *   um-char diretos: + - / % ( ) { } ; ,
-     *   qualquer outro caractere -> LexicalError("caractere inesperado")
-     */
     private Token scanOperatorOrPunctuation() {
-        // TODO (seu): implementar o despacho de operadores/pontuacao com lookahead.
-        throw new UnsupportedOperationException("scanOperatorOrPunctuation: implementar (Checkpoint 1)");
+
+        int startPos = pos;
+        int startLine = line;
+        int startCol = col;
+
+        // Consome primeiro caractere (pontuação/operador)
+        char c = advance();
+        TokenType type = null;
+
+        switch(c) {
+            case '*':
+                if (peek() == '*') {
+                    advance(); 
+                    type = TokenType.POW;
+                } else {
+                    type = TokenType.STAR;
+                }
+                break;
+            case '=':
+                if (peek() == '=') {
+                    advance();
+                    type = TokenType.EQ_EQ;
+                } else {
+                    type = TokenType.ASSIGN;
+                }
+                break;
+            case '!':
+                if (peek() == '=') {
+                    advance();
+                    type = TokenType.NEQ;
+                } else {
+                    type = TokenType.NOT;
+                }
+                break;
+            case '<':
+                if (peek() == '=') {
+                    advance();
+                    type = TokenType.LE;
+                } else {
+                    type = TokenType.LT;
+                }
+                break;
+            case '>':
+                if (peek() == '=') {
+                    advance();
+                    type = TokenType.GE;
+                } else {
+                    type = TokenType.GT;
+                }
+                break;
+            
+            case '&':
+                if (peek() == '&') {
+                    advance();
+                    type = TokenType.AND;
+                } else {
+                    // Apenas & é erro léxico
+                    throw new LexicalError("Caractere '&' isolado inválido, esperado '&&'", startLine, startCol);
+                }
+                break;
+            case '|':
+                if (peek() == '|') {
+                    advance();
+                    type = TokenType.OR;
+                } else {
+                    throw new LexicalError("Caractere '|' isolado inválido, esperado '||'", startLine, startCol);
+                }
+                break;
+            
+            case '+': type = TokenType.PLUS; break;
+            case '-': type = TokenType.MINUS; break;
+            case '/': type = TokenType.SLASH; break;
+            case '%': type = TokenType.PERCENT; break;
+            case '(': type = TokenType.LPAREN; break;
+            case ')': type = TokenType.RPAREN; break;
+            case '{': type = TokenType.LBRACE; break;
+            case '}': type = TokenType.RBRACE; break;
+            case ';': type = TokenType.SEMI; break;
+            case ',': type = TokenType.COMMA; break;
+
+            // Erro de caractere desconhecido
+            default:
+                throw new LexicalError("Caractere inesperado: '" + c + "'", startLine, startCol);
+            
+        }
+
+        String lexeme = source.substring(startPos, pos);
+
+        return new Token(type, lexeme, startLine, startCol);
+    
     }
 
     // ------------------------------------------------------------------
-    //  CLASSES DE CARACTERE (helpers — pode usar a vontade)
+    //  CLASSES DE CARACTERE 
     // ------------------------------------------------------------------
     private static boolean isLetter(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
