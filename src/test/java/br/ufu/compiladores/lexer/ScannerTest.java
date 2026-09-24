@@ -28,24 +28,52 @@ public class ScannerTest {
     @Test void and()    { assertEquals(TokenType.AND,   first("&&").type()); }
 
     // --- casos de ERRO ---
-    @Test void pontoFinalSemDigito() {
-        assertThrows(LexicalError.class, () -> first("3."));
+    private Scanner scanAll(String src) {
+        Scanner s = new Scanner(src);
+        while (s.nextToken().type() != TokenType.EOF) { }
+        return s;
     }
-    @Test void expoenteSemDigito() {
-        assertThrows(LexicalError.class, () -> first("1e"));
+
+    @Test void caractereForaDoAlfabeto() {
+        Scanner s = scanAll("@");
+        assertEquals(1, s.getErrors().size());
     }
-    @Test void stringSemFecharQuebraLinha() {
-        assertThrows(LexicalError.class, () -> first("\"sem fim\n"));
-    }
+
     @Test void stringSemFecharEOF() {
-        assertThrows(LexicalError.class, () -> first("\"sem fim"));
+        Scanner s = scanAll("\"sem fim");
+        assertEquals(1, s.getErrors().size());
     }
+
+    @Test void stringSemFecharQuebraLinha() {
+        Scanner s = scanAll("\"sem fim\n");
+        assertEquals(1, s.getErrors().size());
+    }
+
+    @Test void pontoFinalSemDigito() {
+        Scanner s = scanAll("3.");
+        assertEquals(1, s.getErrors().size());
+    }
+
+    @Test void expoenteSemDigito() {
+        Scanner s = scanAll("1e");
+        assertEquals(1, s.getErrors().size());
+    }
+
     @Test void eIsoladoEhErro() {
-        assertThrows(LexicalError.class, () -> first("&"));
+        Scanner s = scanAll("&");
+        assertEquals(1, s.getErrors().size());
     }
-    @Test void caractereInesperado() {
-        assertThrows(LexicalError.class, () -> first("@"));
+
+    // Teste de recuperação (continua após o erro)
+    @Test void recuperaEContinuaAposErro() {
+        // @ é erro, mas 'total' depois dele deve ser tokenizado
+        Scanner s = new Scanner("@ total");
+        Token t1 = s.nextToken();
+        assertEquals(TokenType.ID, t1.type());
+        assertEquals("total", t1.lexeme());
+        assertEquals(1, s.getErrors().size()); // '@' foi registrado
     }
+
 
     // --- linha inteira: sequência de tipos ---
     @Test void linhaInteira() {

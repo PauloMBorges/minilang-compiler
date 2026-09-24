@@ -9,8 +9,16 @@ public class Scanner {
     private int line = 1;
     private int col  = 1;
 
+    // coleta de erros léxicos (recuperação, não trava no primeiro erro)
+    private final java.util.List<LexicalError> errors = new java.util.ArrayList<>();
+
     public Scanner(String source) {
         this.source = source;
+    }
+
+    // erros léxicos coletados durante tokenização (se estiver vazio = sem erros)
+    public java.util.List<LexicalError> getErrors() {
+        return errors;
     }
 
     // ------------------------------------------------------------------
@@ -48,6 +56,7 @@ public class Scanner {
      * pula o que deve ser ignorado, olha o primeiro caractere e despacha
      * para o AFD correto (maximal munch acontece dentro de cada scanXxx).
      */
+    /* 
     public Token nextToken() {
         skipWhitespaceAndComments();
 
@@ -63,6 +72,35 @@ public class Scanner {
         if (c == '"')                 return scanString();
         // operadores e pontuacao: tudo o mais cai aqui
         return scanOperatorOrPunctuation();
+    }
+    */
+    
+    public Token nextToken() {
+        // laço continua até produzir token válido ou chegar ao EOF
+        // se um scanXxx lançar LexicalError -> captura -> registra -> recomeça
+        while(true){
+            skipWhitespaceAndComments();
+
+            if (!hasNext()) {
+                return new Token(TokenType.EOF, "", line, col);
+            }
+
+            int posAntes = pos; 
+
+            try {
+                char c = peek();
+                if (isLetter(c) || c == '_')  return scanIdentifierOrKeyword();
+                if (isDigit(c))               return scanNumber();
+                if (c == '"')                 return scanString();
+                return scanOperatorOrPunctuation();
+            } catch (LexicalError e) {
+                errors.add(e); // registra o erro na lista
+
+                if (pos == posAntes && hasNext()) {
+                    advance(); // consome o caractere "ruim" e segue
+                }
+            }
+        }
     }
 
     // ------------------------------------------------------------------

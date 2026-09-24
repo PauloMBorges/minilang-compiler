@@ -1,5 +1,6 @@
 package br.ufu.compiladores;
 
+import br.ufu.compiladores.lexer.LexicalError;
 import br.ufu.compiladores.lexer.Scanner;
 import br.ufu.compiladores.lexer.Token;
 import br.ufu.compiladores.lexer.TokenType;
@@ -26,5 +27,14 @@ public class Main {
             t = scanner.nextToken();
             System.out.println(t);
         } while (t.type() != TokenType.EOF);
+
+        // Relatório de erros léxicos
+        var errors = scanner.getErrors();
+        if (!errors.isEmpty()) {
+            System.err.println("\n---" + errors.size() + " erro(s) léxico(s) ---");
+            for (LexicalError e : errors) {
+                System.err.println(e.getMessage());
+            }
+        }
     }
 }
