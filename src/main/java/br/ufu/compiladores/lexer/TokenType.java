@@ -8,7 +8,7 @@ public enum TokenType {
 
     // --- Palavras reservadas ---
     // Reconhecidas como ID e classificadas por tabela (ver ReservedWords).
-    INT, BOOL, DOUBLE,          // tipos
+    INT, BOOL, DOUBLE, CHAR, STRING,      // tipos
     TRUE, FALSE,                // literais booleanos (tratados como reservadas)
     IF, ELIF, ELSE, WHILE,      // controle
     RETURN, CONST,              // funcoes / imutabilidade
@@ -18,6 +18,7 @@ public enum TokenType {
     INT_LIT,            // digito (digito | '_')*   com '_' apenas entre digitos
     DOUBLE_LIT,         // digito+ ('.' digito+)? (('e'|'E') ('+'|'-')? digito+)?
     STRING_LIT,         // " (car != ")* "
+    CHAR_LIT,           // "'" (car != "'") "'"
 
     // --- Operadores ---
     PLUS, MINUS, STAR, SLASH, PERCENT,   // +  -  *  /  %

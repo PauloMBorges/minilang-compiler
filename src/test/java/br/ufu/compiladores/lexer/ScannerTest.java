@@ -27,6 +27,17 @@ public class ScannerTest {
     @Test void eqEq()   { assertEquals(TokenType.EQ_EQ, first("==").type()); }
     @Test void and()    { assertEquals(TokenType.AND,   first("&&").type()); }
 
+    // --- char válido ---
+    @Test void charSimples() {
+        assertEquals(TokenType.CHAR_LIT, first("'a'").type());
+    }
+    @Test void charTipoReservado() {
+        assertEquals(TokenType.CHAR, first("char").type());
+    }
+    @Test void stringTipoReservado() {
+        assertEquals(TokenType.STRING, first("string").type());
+    }
+
     // --- casos de ERRO ---
     private Scanner scanAll(String src) {
         Scanner s = new Scanner(src);
@@ -74,6 +85,19 @@ public class ScannerTest {
         assertEquals(1, s.getErrors().size()); // '@' foi registrado
     }
 
+    // char malformado
+    @Test void charVazioEhErro() {
+        Scanner s = scanAll("''");
+        assertEquals(1, s.getErrors().size());
+    }
+    @Test void charLongoEhErro() {
+        Scanner s = scanAll("'ab'");
+        assertEquals(1, s.getErrors().size());
+    }
+    @Test void charSemFecharEhErro() {
+        Scanner s = scanAll("'a");
+        assertEquals(1, s.getErrors().size());
+    }
 
     // --- linha inteira: sequência de tipos ---
     @Test void linhaInteira() {
@@ -86,4 +110,6 @@ public class ScannerTest {
             assertEquals(t, s.nextToken().type());
         }
     }
+
+
 }

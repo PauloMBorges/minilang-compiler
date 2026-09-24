@@ -18,7 +18,9 @@ public final class ReservedWords {
         Map.entry("return", TokenType.RETURN),
         Map.entry("const",  TokenType.CONST),
         Map.entry("print",  TokenType.PRINT),
-        Map.entry("read",   TokenType.READ)
+        Map.entry("read",   TokenType.READ),
+        Map.entry("char",   TokenType.CHAR),
+        Map.entry("string", TokenType.STRING)
     );
 
     private ReservedWords() {}

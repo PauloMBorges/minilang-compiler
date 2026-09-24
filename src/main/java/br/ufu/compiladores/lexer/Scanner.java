@@ -92,6 +92,7 @@ public class Scanner {
                 if (isLetter(c) || c == '_')  return scanIdentifierOrKeyword();
                 if (isDigit(c))               return scanNumber();
                 if (c == '"')                 return scanString();
+                if (c == '\'')                return scanChar();
                 return scanOperatorOrPunctuation();
             } catch (LexicalError e) {
                 errors.add(e); // registra o erro na lista
@@ -276,6 +277,43 @@ public class Scanner {
         String lexeme = source.substring(startPos + 1, pos -1);
 
         return new Token(TokenType.STRING_LIT, lexeme, startLine, startCol);
+    }
+
+    private Token scanChar() {
+
+        int startPos = pos;
+        int startLine = line;
+        int startCol = col;
+
+        advance(); // consome aspa simples de abertura
+
+        if (!hasNext() || peek() == '\n') {
+            throw new LexicalError("Caractere não fechado antes de quebra de linha ou fim de arquivo", startLine, startCol);
+        }
+
+        if (peek() == '\'') {
+            advance(); // consome a aspa de fechamento para limpar o buffer
+            throw new LexicalError("Caractere vazio '' não é permitido", startLine, startCol);
+        }
+
+        advance(); // consome o caractere 
+
+        if (!hasNext() || peek() != '\'') {
+            while (hasNext() && peek() != '\'' && peek() != '\n') {
+                advance(); // consome o texto malformado até achar a aspa final ou quebra de linha
+            }
+            if (peek() == '\'') {
+                advance(); // consome aspa de fechamento
+            }
+            throw new LexicalError("Formato de caractere inválido: esperado aspa de fechamento ou múltiplos caracteres encontrados", startLine, startCol);
+        }
+
+        advance(); // consome aspa de fechamento
+
+        String lexeme = source.substring(startPos + 1, pos - 1);
+
+        return new Token(TokenType.CHAR_LIT, lexeme, startLine, startCol);
+
     }
 
     private Token scanOperatorOrPunctuation() {
