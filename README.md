@@ -1,5 +1,6 @@
 # MiniLang Compiler
 
+**Aluno:** Paulo Borges · Construção de Compiladores · UFU.FACOM.BCC
 Compilador incremental da disciplina de Construção de Compiladores (UFU).
 Etapa atual: **Checkpoint 1 — Análise Léxica (scanner à mão)**.
 
