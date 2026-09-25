@@ -38,6 +38,11 @@ public class ScannerTest {
         assertEquals(TokenType.STRING, first("string").type());
     }
 
+    // --- string válido ---
+    @Test void stringVazia() {
+    assertEquals(TokenType.STRING_LIT, first("\"\"").type());
+    }   
+
     // --- casos de ERRO ---
     private Scanner scanAll(String src) {
         Scanner s = new Scanner(src);
