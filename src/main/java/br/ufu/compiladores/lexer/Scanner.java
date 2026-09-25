@@ -50,30 +50,6 @@ public class Scanner {
     // ------------------------------------------------------------------
     //  PONTO DE ENTRADA
     // ------------------------------------------------------------------
-
-    /**
-     * Produz o proximo token do fluxo. É o "START" do autômato:
-     * pula o que deve ser ignorado, olha o primeiro caractere e despacha
-     * para o AFD correto (maximal munch acontece dentro de cada scanXxx).
-     */
-    /* 
-    public Token nextToken() {
-        skipWhitespaceAndComments();
-
-        if (!hasNext()) {
-            return new Token(TokenType.EOF, "", line, col);
-        }
-
-        char c = peek();
-
-        // Despacho: o primeiro caractere ja decide qual AFD entra.
-        if (isLetter(c) || c == '_')  return scanIdentifierOrKeyword();
-        if (isDigit(c))               return scanNumber();
-        if (c == '"')                 return scanString();
-        // operadores e pontuacao: tudo o mais cai aqui
-        return scanOperatorOrPunctuation();
-    }
-    */
     
     public Token nextToken() {
         // laço continua até produzir token válido ou chegar ao EOF

@@ -139,7 +139,7 @@ São erros léxicos:
 
 ---
 
-## 9. Observações de escopo (fronteiras declaradas)
+## 9. Observações
 
 - **Escapes** (`\"`, `\n`, `\'`) **não** são suportadas em strings nem em chars. 
   Uma barra invertida é um caractere comum. Em uma string, qualquer aspa dupla (") 
