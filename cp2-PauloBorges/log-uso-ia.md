@@ -30,14 +30,6 @@
 
 ## Checkpoint 2 — Gramática e parser recursivo descendente
 
-### 2026-10-06 a 2026-10-12 — Estudo das Aulas 4, 5 e 6 (dúvidas conceituais)
-- **Ferramenta:** Claude
-- **Contexto/tarefa:** os slides das Aulas 4 (GLC), 5 (LL(1)) e 6 (parser descendente) são resumidos; pedi um material de estudo que explicasse cada slide.
-- **Prompt (resumo):** "Faça um material que contextualize melhor cada slide para melhor entendimento."
-- **O que aceitei:** as explicações conceituais (ambiguidade, recursão à esquerda, fatoração, FIRST/FOLLOW, condição LL(1), modo pânico) e os exemplos resolvidos com gramáticas da aula ou de exemplo, diferentes da gramática da MiniLang.
-- **O que rejeitei/alterei:** <!-- TODO -->
-- **Observação:** nenhum conteúdo da gramática da MiniLang foi pedido ou gerado nesse estudo.
-
 ### 2026-10-12 — Estrutura de entrega do CP2 (boilerplate)
 - **Ferramenta:** Claude
 - **Contexto/tarefa:** adaptar o projeto Maven do CP1 ao formato de entrega do CP2 (`src/`, `test/`, documentos na raiz) e criar os esqueletos.
@@ -50,6 +42,4 @@
   - `Main.java`: modo de análise sintática (ACEITO/REJEITADO) e opção `--tokens` para manter o comportamento do CP1;
   - `ParserTest.java`: helpers e os 7 testes exigidos, desativados (`@Disabled`) até os programas e o parser existirem; os arquivos de `test/programas/` têm só um comentário descrevendo o que cada um deve cobrir;
   - templates vazios de `gramatica-first-follow.md` (seções 2.1–2.3 do enunciado) e atualização do `README.md`.
-- **O que aceitei:** <!-- TODO -->
-- **O que rejeitei/alterei:** <!-- TODO -->
-- **Verificação:** <!-- TODO: ex.: rodei mvn test -> scanner continua passando, testes do parser aparecem como skipped -->
+
