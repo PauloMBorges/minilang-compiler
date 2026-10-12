@@ -1,0 +1,21 @@
+INT('int')@1:1
+ID('x')@1:5
+ASSIGN('=')@1:7
+INT_LIT('5')@1:9
+SEMI(';')@1:10
+ID('contador')@2:3
+ASSIGN('=')@2:12
+ID('total')@2:14
+SEMI(';')@2:19
+PRINT('print')@3:1
+LPAREN('(')@3:6
+INT('int')@4:1
+ID('y')@4:5
+ASSIGN('=')@4:7
+INT_LIT('10')@4:9
+SEMI(';')@4:11
+EOF@7:78
+
+---2 erro(s) l�xico(s) ---
+Erro lexico (linha 2, coluna 1): Caractere inesperado: '@'
+Erro lexico (linha 3, coluna 7): String n�o fechada antes da quebra de linha
