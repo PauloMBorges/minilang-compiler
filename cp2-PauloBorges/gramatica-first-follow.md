@@ -40,6 +40,43 @@ Recursão à esquerda (Aula 4) e fatoração à esquerda (Aula 5). Uma linha por
 <!-- TODO: escolhas que não vêm da teoria, e sim do projeto da linguagem.
      Ex.: como um procedimento (sem valor de retorno) é declarado com os tokens do CP1;
      como if/elif/else se associam; se blocos { } são obrigatórios; precedência e associatividade dos operadores. -->
+**Estrutura do programa**
+- Um programa é uma sequência de itens globais: declarações de variável, de constante e de função, e comandos, em qualquer ordem. Não há main.
+- Funções só são declaradas no nível global (sem funções aninhadas)
+- Um bloco { ... }, contém declarações de variável.constante e comandos, e pode ser vazio.
+
+**Declarações**
+- Variável: um tipo (int, double, bool, char, string), um ID, inicialização opcional (= expr) e ;. Uma variável por declaração.
+- Constante: const, tipo, ID, = expr obrigatório e ;. Vale no nível global e dentro de blocos
+- Função: tipo de retorno, ID, ( parâmetros ) e bloco. O tipo de retorno é um dos 5 tipos ou void; void não é tipo de variável
+- Procedimento = função com retorno void
+- Parâmetros: lista de tipo ID separados por ,: pode ser vazia
+- Variável x função: depois de tipo ID, o token ( indica função; = ou ; indicam variável (fatoração à esquerda)
+
+**Comandos**
+- Atribuição: ID = expr ;. A atribuição é comando (não expressão)
+- Chamada como comando: ID ( argumentos ) ;. Argumentos: expressões separadas por ,; podem ser vazios
+- Atribuição x chamada: depois do ID, o token = indica atribuição e ( indica chamada
+- if ( expr ) bloco, seguindo de zero ou mais elif ( expr ) bloco e, opcionalmente, else bloco
+- while ( expr ) bloco
+- Parênteses na condição e chaves no bloco são obrigatórios em if, elif, else e while. Com o bloco sempre fechado por }, não existe dangling else
+- print ( expr ) ; e read ( ID ) ;
+- return ; ou return expr ;. Se o return combina com o tipo da função, isso é verificado na análise semântica.
+- Não há comando vazio (; sozinho) nem bloco solto como comando
+
+**Expressões** (da menor para maior precedência) 
+
+| Nível | Operadores | Associatividade |
+|---|---|---|
+| 1 | `\|\|` | esquerda |
+| 2 | `&&` | esquerda |
+| 3 | `==` `!=` | esquerda |
+| 4 | `<` `<=` `>` `>=` | esquerda |
+| 5 | `+` `-` | esquerda |
+| 6 | `*` `/` `%` | esquerda |
+| 7 | `**` | direita |
+| 8 | `-` `!` (unários, prefixos) | direita |
+| 9 | fator: `( expr )`, `INT_LIT`, `DOUBLE_LIT`, `STRING_LIT`, `CHAR_LIT`, `true`, `false`, `ID`, chamada `ID ( argumentos )` | — |
 
 ---
 
