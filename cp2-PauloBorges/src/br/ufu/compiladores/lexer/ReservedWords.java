@@ -20,7 +20,8 @@ public final class ReservedWords {
         Map.entry("print",  TokenType.PRINT),
         Map.entry("read",   TokenType.READ),
         Map.entry("char",   TokenType.CHAR),
-        Map.entry("string", TokenType.STRING)
+        Map.entry("string", TokenType.STRING),
+        Map.entry("void", TokenType.VOID) // adicionado no cp2
     );
 
     private ReservedWords() {}

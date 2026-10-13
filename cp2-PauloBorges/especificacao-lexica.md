@@ -85,19 +85,22 @@ classificadas por consulta a uma tabela hash (`ReservedWords`).
 
 | Categoria | Palavras |
 |---|---|
-| Tipos | `int`, `double`, `bool`, `char`, `string` |
+| Tipos | `int`, `double`, `bool`, `char`, `string`, `void` |
 | Valores booleanos | `true`, `false` |
 | Controle | `if`, `elif`, `else`, `while` |
 | Funções / imutabilidade | `return`, `const` |
 | Entrada e saída | `print`, `read` |
 
-Total: 15 palavras reservadas.
+Total: 16 palavras reservadas.
 
 `elif` permite encadear condicionais com uma única palavra reservada, ao invés 
 do aninhamento else if (dois tokens); isso simplifica tanto o léxico quanto a futura
 gramática.  
 `const` habilita a declaração de constantes, o que abre caminho para uma verificação 
 semântica nas entregas seguintes (impedir reatribuição de um valor const).
+`void` foi adicionada no CP2: o escopo fixo exige procedimentos (funções sem valor de
+retorno), e a lista do CP1 não tinha como expressá-los. `void` só é válida como tipo de
+retorno de função
 
 ---
 

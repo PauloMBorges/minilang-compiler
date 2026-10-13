@@ -78,6 +78,9 @@ Recursão à esquerda (Aula 4) e fatoração à esquerda (Aula 5). Uma linha por
 | 8 | `-` `!` (unários, prefixos) | direita |
 | 9 | fator: `( expr )`, `INT_LIT`, `DOUBLE_LIT`, `STRING_LIT`, `CHAR_LIT`, `true`, `false`, `ID`, chamada `ID ( argumentos )` | — |
 
+**`void`**
+- `void` não existia no scanner do CP1. Foi adicionada como palavra reservada (`TokenType.VOID`), porque o escopo fixo exige procedimentos. Única alteração no scanner do CP1; ver `especificacao-lexica.md`, §6.
+
 ---
 
 ## 2. FIRST e FOLLOW (Seção 2.2)

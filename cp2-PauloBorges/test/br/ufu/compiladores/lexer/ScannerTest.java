@@ -38,6 +38,10 @@ public class ScannerTest {
         assertEquals(TokenType.STRING, first("string").type());
     }
 
+    @Test void voidReservado() {
+        assertEquals(TokenType.VOID, first("void").type());
+    }
+
     // --- string válido ---
     @Test void stringVazia() {
     assertEquals(TokenType.STRING_LIT, first("\"\"").type());

@@ -9,6 +9,7 @@ public enum TokenType {
     // --- Palavras reservadas ---
     // Reconhecidas como ID e classificadas por tabela (ver ReservedWords).
     INT, BOOL, DOUBLE, CHAR, STRING,      // tipos
+    VOID,                       // retorno de procedimento (adicionado no CP2)
     TRUE, FALSE,                // literais booleanos (tratados como reservadas)
     IF, ELIF, ELSE, WHILE,      // controle
     RETURN, CONST,              // funcoes / imutabilidade
