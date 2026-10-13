@@ -43,3 +43,12 @@
   - `ParserTest.java`: helpers e os 7 testes exigidos, desativados (`@Disabled`) até os programas e o parser existirem; os arquivos de `test/programas/` têm só um comentário descrevendo o que cada um deve cobrir;
   - templates vazios de `gramatica-first-follow.md` (seções 2.1–2.3 do enunciado) e atualização do `README.md`.
 
+### 2026-10-12 — Revisão e correção dos conjuntos FIRST e FOLLOW
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** revisão e validação dos conjuntos FIRST e FOLLOW (Seção 2.2) calculados previamente para a gramática LL(1) da linguagem.
+- **Prompt (resumo):** "Aqui estão os conjuntos FIRST e FOLLOW que calculei para a minha gramática. Pode revisar, apontar se esqueci de algo ou corrigir possíveis erros?"
+- **O que foi gerado:**
+  - validação da tabela original submetida;
+  - correção de itens calculados incorretamente, ajustando a propagação de conjuntos em regras com derivação vazia (ε);
+  - identificação e inclusão de terminais ausentes que haviam sido esquecidos durante o cálculo manual;
+  - tabela final revisada, corrigida e formatada em Markdown, pronta para ser incorporada ao arquivo gramatica-first-follow.md.
