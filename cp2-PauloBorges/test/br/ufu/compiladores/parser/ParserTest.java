@@ -1,7 +1,7 @@
 package br.ufu.compiladores.parser;
 
 import br.ufu.compiladores.lexer.Scanner;
-import org.junit.jupiter.api.Disabled;
+//import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
