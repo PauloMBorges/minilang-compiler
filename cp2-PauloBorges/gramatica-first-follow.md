@@ -41,7 +41,7 @@ Recursão à esquerda (Aula 4) e fatoração à esquerda (Aula 5). Uma linha por
      Ex.: como um procedimento (sem valor de retorno) é declarado com os tokens do CP1;
      como if/elif/else se associam; se blocos { } são obrigatórios; precedência e associatividade dos operadores. -->
 **Estrutura do programa**
-- Um programa é uma sequência de itens globais: declarações de variável, de constante e de função, e comandos, em qualquer ordem. Não há main.
+- Um programa é uma sequência de declarações globais (variáveis, constantes e funções). Comandos só aparecem dentro de funções. A execução começa em main; a existência de main é verificada na análise semântica, não na gramática.
 - Funções só são declaradas no nível global (sem funções aninhadas)
 - Um bloco { ... }, contém declarações de variável.constante e comandos, e pode ser vazio.
 
