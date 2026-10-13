@@ -4,10 +4,10 @@ Checkpoint 2 · Paulo Borges · Construção de Compiladores · UFU
 
 ## 0. Convenções
 
-- Notação: <!-- TODO: BNF ou EBNF; dizer qual símbolo é usado para produção (`->` ou `::=`) -->
-- Terminais escritos com os nomes do `TokenType` do CP1 (ex.: `ID`, `INT_LIT`, `SEMI`, `LBRACE`), para que cada terminal da gramática corresponda exatamente a um `match(TokenType.X)` no parser.
+- Notação: BNF. O símbolo utilizado para produção é `::=`.
+- Terminais escritos com os nomes do `TokenType` do CP1 (ex.: `ID`, `INT_LIT`, `SEMI`, `LBRACE`), para que cada terminal da gramática corresponda exatamente a um `match(TokenType.X)` no parser. Palavras reservadas e símbolos também podem aparecer entre aspas (ex: `"if"`, `"("`) para facilitar a leitura, correspondendo diretamente ao seu respectivo token.
 - `ε` = cadeia vazia; `$` = fim da entrada (`TokenType.EOF`).
-- Símbolo inicial: <!-- TODO -->
+- Símbolo inicial: `Programa`
 
 ---
 
@@ -249,7 +249,7 @@ FatorIdResto        ::= "(" OpcionalArgs ")" | ε
 | 9 | fator: `( expr )`, `INT_LIT`, `DOUBLE_LIT`, `STRING_LIT`, `CHAR_LIT`, `true`, `false`, `ID`, chamada `ID ( argumentos )` | — |
 
 **`void`**
-- `void` não existia no scanner do CP1. Foi adicionada como palavra reservada (`TokenType.VOID`), porque o escopo fixo exige procedimentos. Única alteração no scanner do CP1; ver `especificacao-lexica.md`, §6.
+- `void` não existia no scanner do CP1, foi adicionada como palavra reservada (`TokenType.VOID`), porque o escopo fixo exige procedimentos (única alteração no scanner do CP1)
 
 ---
 
@@ -353,14 +353,65 @@ Não-terminais com uma única produção não têm decisão a verificar.
 
 ### 3.1 Violações encontradas e correções
 
-Nenhuma violação foi encontrada; a gramática é LL(1). O conflito clássico do *dangling else* não ocorre porque os blocos de `if`/`elif`/`else` exigem chaves obrigatoriamente (decisão da Secção 1.4): o `}` fecha o bloco sintático de forma inequívoca, e `else` não pertence ao FOLLOW de nenhuma alternativa anulável que concorra com ele.
+Nenhuma violação foi encontrada, a gramática é LL(1). O conflito do *dangling else* não ocorre porque os blocos de `if`/`elif`/`else` exigem chaves obrigatoriamente.
 
 ---
 
 ## 4. Da gramática ao código
 
-Ajuda a apontar, para cada decisão do parser, de onde ela vem (objetivo da Seção 1 do enunciado).
+Cada não-terminal virou um método `parseX()`. Ao escolher uma alternativa, o método compara o lookahead com o FIRST de cada alternativa. Se o não-terminal é anulável, o método só aceita ε quando o lookahead está no FOLLOW; caso contrário, registra o erro e sincroniza. Os conjuntos são as constantes no início do `Parser.java`.
+
+Não-terminais com uma única produção não têm decisão a tomar: o método chama os `parseX()` e `match()` da produção em sequência. Nesses casos, o erro é reportado pelo próprio `match()`, que não consome o token.
 
 | Não-terminal | Método | Decide a alternativa por | Aceita ε quando | Sincroniza em |
 |---|---|---|---|---|
-| <!-- TODO --> | `parseX()` | FIRST(...) | lookahead ∈ FOLLOW(...) | FOLLOW(...) + âncoras |
+| Programa, ListaDeclaracoes | `parsePrograma()` (loop) | `FIRST_DECLARACAO` → Declaracao | lookahead = `$` (`FOLLOW_LISTA_DECLARACOES`) | `SYNC_LISTA_DECLARACOES` = FIRST(Declaracao) ∪ {`$`} |
+| Declaracao | `parseDeclaracao()` | `"const"` → DeclConst; `FIRST_TIPO` → DeclVarFuncao; `"void"` → DeclVoidFuncao | — | `FOLLOW_DECLARACAO` |
+| DeclConst | `parseDeclConst()` | produção única | — | — |
+| DeclVarFuncao | `parseDeclVarFuncao()` | produção única | — | — |
+| DeclResto | `parseDeclResto()` | `"="` ou `";"` → variável; `"("` → função | — | `FOLLOW_DECLARACAO` |
+| DeclVoidFuncao | `parseDeclVoidFuncao()` | produção única | — | — |
+| AtribuicaoOpcional | `parseAtribuicaoOpcional()` | `"="` | lookahead = `";"` | `SYNC_SEMI` = FOLLOW(AtribuicaoOpcional) |
+| OpcionalParams | `parseOpcionalParams()` | `FIRST_TIPO` → ListaParams | lookahead = `")"` | `SYNC_RPAREN` = FOLLOW(OpcionalParams) |
+| Tipo | `parseTipo()` | `FIRST_TIPO` | — | `SYNC_TIPO` = FOLLOW(Tipo) ∪ {`")"`, `","`} |
+| ListaParams, ListaParamsResto | `parseListaParams()` (`while`) | `","` repete | lookahead ≠ `","` | — (o `match(RPAREN)` seguinte acusa o erro) |
+| Bloco | `parseBloco()` | produção única | — | — |
+| ListaComandos | `parseListaComandos()` (loop) | `FIRST_COMANDO` → Comando | lookahead = `"}"` (`FOLLOW_LISTA_COMANDOS`) ou `$` | `SYNC_LISTA_COMANDOS` = FIRST(Comando) ∪ {`"}"`} |
+| Comando | `parseComando()` | `"const"`, `FIRST_TIPO`, `ID`, `"if"`, `"while"`, `"return"`, `"print"`, `"read"` | — | `FOLLOW_COMANDO` |
+| DeclVarLocal | `parseDeclVarLocal()` | produção única | — | — |
+| CmdId | `parseCmdId()` | produção única | — | — |
+| CmdIdResto | `parseCmdIdResto()` | `"="` → atribuição; `"("` → chamada | — | `FOLLOW_COMANDO` |
+| OpcionalArgs | `parseOpcionalArgs()` | `FIRST_EXPRESSAO` → ListaArgs | lookahead = `")"` | `SYNC_RPAREN` = FOLLOW(OpcionalArgs) |
+| ListaArgs, ListaArgsResto | `parseListaArgs()` (`while`) | `","` repete | lookahead ≠ `","` | — (o `match(RPAREN)` seguinte acusa o erro) |
+| CmdIf | `parseCmdIf()` | produção única | — | — |
+| ListaElif | `parseListaElif()` (`while`) | `"elif"` repete | lookahead ≠ `"elif"` | — |
+| ElseOpcional | `parseElseOpcional()` | `"else"` | lookahead ≠ `"else"` | — |
+| CmdWhile | `parseCmdWhile()` | produção única | — | — |
+| CmdReturn | `parseCmdReturn()` | produção única | — | — |
+| RetornoOpcional | `parseRetornoOpcional()` | `FIRST_EXPRESSAO` → Expressao | lookahead = `";"` | `SYNC_SEMI` = FOLLOW(RetornoOpcional) |
+| CmdPrint | `parseCmdPrint()` | produção única | — | — |
+| CmdRead | `parseCmdRead()` | produção única | — | — |
+| Expressao | `parseExpressao()` | produção única (chama `parseExpOR`) | — | — |
+| ExpOR, ExpORResto | `parseExpOR()` (`while`) | `"\|\|"` repete | lookahead ∈ `FOLLOW_EXPRESSAO` | `FOLLOW_EXPRESSAO` |
+| ExpAND, ExpANDResto | `parseExpAND()` (`while`) | `"&&"` repete | lookahead ∈ `FOLLOW_EXP_AND` | `FOLLOW_EXP_AND` |
+| ExpIgualdade, ExpIgualResto | `parseExpIgualdade()` (`while`) | `"=="`, `"!="` repetem | lookahead ∈ `FOLLOW_EXP_IGUALDADE` | `FOLLOW_EXP_IGUALDADE` |
+| ExpRelacional, ExpRelResto | `parseExpRelacional()` (`while`) | `"<"`, `">"`, `"<="`, `">="` repetem | lookahead ∈ `FOLLOW_EXP_RELACIONAL` | `FOLLOW_EXP_RELACIONAL` |
+| ExpAdd, ExpAddResto | `parseExpAdd()` (`while`) | `"+"`, `"-"` repetem | lookahead ∈ `FOLLOW_EXP_ADD` | `FOLLOW_EXP_ADD` |
+| ExpMult, ExpMultResto | `parseExpMult()` (`while`) | `"*"`, `"/"`, `"%"` repetem | lookahead ∈ `FOLLOW_EXP_MULT` | `FOLLOW_EXP_MULT` |
+| ExpPot, ExpPotResto | `parseExpPot()` (recursivo) | `"**"` → chama `parseExpPot()` de novo | lookahead ∈ `FOLLOW_EXP_POT` | `FOLLOW_EXP_POT` |
+| ExpUnaria | `parseExpUnaria()` (recursivo) | `"-"`, `"!"` → ExpUnaria; `FIRST_FATOR` → Fator | — | `FOLLOW_FATOR` = FOLLOW(ExpUnaria) |
+| Fator | `parseFator()` | `"("`, `ID`, `INT_LIT`, `DOUBLE_LIT`, `STRING_LIT`, `CHAR_LIT`, `"true"`, `"false"` | — | `FOLLOW_FATOR` |
+| FatorIdResto | `parseFatorIdResto()` | `"("` → chamada | lookahead ∈ `FOLLOW_FATOR` | `FOLLOW_FATOR` |
+
+Nos níveis de expressão, cada constante `FOLLOW_EXP_X` é o FOLLOW da cauda daquele nível (ex.: `FOLLOW_EXP_ADD` = FOLLOW(ExpAddResto)).
+
+### 4.1 Diferenças entre a gramática e o código
+
+- **Caudas viraram `while`.** As produções `XResto ::= op Y XResto | ε` (ListaParamsResto, ListaArgsResto, ListaElif e as caudas de expressão de ExpOR a ExpMult) foram implementadas como um laço dentro do método do não-terminal da esquerda, em vez de um método recursivo separado. As duas formas reconhecem a mesma linguagem, e o laço mantém a associatividade à esquerda.
+- **`**` continua recursivo.** `ExpPotResto ::= "**" ExpPot | ε` chama `parseExpPot()` de novo; é isso que torna `**` associativo à direita.
+- **ListaDeclaracoes não tem método próprio.** Como `Programa ::= ListaDeclaracoes`, o laço de ListaDeclaracoes fica dentro de `parsePrograma()`.
+- **ε verificado pelo FOLLOW depois de cada laço de expressão.** Quando o operador do nível acaba, o método confere se o lookahead está no FOLLOW da cauda. Se não estiver, reporta o erro (ex.: `int x = 5 5;`, em que `5` não pode vir depois de uma expressão).
+- **ε sem verificação em ListaElif, ElseOpcional, ListaParamsResto e ListaArgsResto.** Esses laços terminam quando o token de repetição (`"elif"`, `"else"`, `","`) não aparece. Um erro logo depois é detectado pelo `match()` seguinte (`")"` ou o primeiro token do próximo comando), então não é preciso verificar o FOLLOW aqui.
+- **`$` encerra ListaComandos.** `$` não está em FOLLOW(ListaComandos) = {`"}"`}, mas o laço para nele para não ficar em loop infinito quando um bloco não é fechado. Nesse caso, quem reporta o erro é o `match(RBRACE)` de `parseBloco()`.
+- **`Tipo` sincroniza também em `")"` e `","`.** FOLLOW(Tipo) é só {`ID`}. Os dois tokens a mais são âncoras para um tipo inválido numa lista de parâmetros, como em `int f(int a, ) { ... }`.
+- **`else` de segurança.** `parseDeclaracao()` e `parseComando()` só são chamados depois que o laço confere o FIRST, então o `else` com erro desses dois métodos nunca é executado; ele existe só por segurança.

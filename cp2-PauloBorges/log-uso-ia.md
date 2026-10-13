@@ -46,9 +46,17 @@
 ### 2026-10-12 — Revisão e correção dos conjuntos FIRST e FOLLOW
 - **Ferramenta:** Claude
 - **Contexto/tarefa:** revisão e validação dos conjuntos FIRST e FOLLOW (Seção 2.2) calculados previamente para a gramática LL(1) da linguagem.
-- **Prompt (resumo):** "Aqui estão os conjuntos FIRST e FOLLOW que calculei para a minha gramática. Pode revisar, apontar se esqueci de algo ou corrigir possíveis erros?"
+- **Prompt:** "Aqui estão os conjuntos FIRST e FOLLOW que calculei para a minha gramática. Pode revisar, apontar se esqueci de algo ou corrigir possíveis erros?"
 - **O que foi gerado:**
   - validação da tabela original submetida;
   - correção de itens calculados incorretamente, ajustando a propagação de conjuntos em regras com derivação vazia (ε);
   - identificação e inclusão de terminais ausentes que haviam sido esquecidos durante o cálculo manual;
   - tabela final revisada, corrigida e formatada em Markdown, pronta para ser incorporada ao arquivo gramatica-first-follow.md.
+
+### 2026-10-13 — Redação e estruturação da Seção 4 (Mapeamento Gramática-Código)
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** Criação da Seção 4 do documento gramatica-first-follow.md, mapeando a implementação em Java (Parser.java) para a gramática formal LL(1).
+- **Prompt:** "Escreva a Seção 4 explicando como cada não-terminal virou um método parseX(), as decisões baseadas em FIRST/FOLLOW, a sincronização e as diferenças entre a gramática teórica e o código final implementado."
+- **O que foi gerado:**
+  - Tabela detalhada associando não-terminais aos métodos, condições de decisão por FIRST, validação de ε via FOLLOW e conjuntos de sincronização do modo pânico.
+  - Subseção 4.1 documentando as divergências estruturais intencionais (como a conversão de recursão à direita em laços while, a manutenção da recursividade para a potência ** e o ajuste de âncoras adicionais).

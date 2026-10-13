@@ -1,4 +1,5 @@
 # valido01.ml: Tipos basicos, variaveis, constantes e expressoes matematicas
+# java -cp target/classes br.ufu.compiladores.Main test/programas/validos/valido01.ml
 const double PI = 3.14159;
 
 void main() {
