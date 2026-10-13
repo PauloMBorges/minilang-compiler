@@ -14,10 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Suite do Checkpoint 2 (secao 3.3 do enunciado).
  *
  * Os programas de teste ficam em test/programas/ (validos/ e invalidos/).
- * Cada teste esta @Disabled ate o programa correspondente ser escrito e o
- * parser implementar as construcoes que ele usa: remova o @Disabled e
- * complete os asserts (TODO) a medida que avancar.
  */
+
 public class ParserTest {
 
     private static final Path PROGRAMAS = Path.of("test", "programas");
@@ -38,60 +36,56 @@ public class ParserTest {
     }
 
     // ------------------------------------------------------------------
-    //  PROGRAMAS VALIDOS (minimo 3): tipos, controle, procedimentos/funcoes
+    //  PROGRAMAS VALIDOS: tipos, controle, procedimentos/funcoes
     // ------------------------------------------------------------------
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void valido01() {
         Parser p = analisar("validos/valido01.ml");
         assertTrue(p.getErrors().isEmpty(), listar(p));
     }
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void valido02() {
         Parser p = analisar("validos/valido02.ml");
         assertTrue(p.getErrors().isEmpty(), listar(p));
     }
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void valido03() {
         Parser p = analisar("validos/valido03.ml");
         assertTrue(p.getErrors().isEmpty(), listar(p));
     }
 
     // ------------------------------------------------------------------
-    //  PROGRAMAS INVALIDOS (minimo 3, cada um com um erro sintatico diferente)
+    //  PROGRAMAS INVALIDOS 
     // ------------------------------------------------------------------
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void invalido01() {
         Parser p = analisar("invalidos/invalido01.ml");
         assertFalse(p.getErrors().isEmpty(), "o erro nao foi detectado");
-        // TODO: conferir a linha do erro, ex.: assertEquals(3, p.getErrors().get(0).line());
+        assertEquals(3, p.getErrors().get(0).line(), "Erro esperado na linha 3 (falta de ;)");
     }
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void invalido02() {
         Parser p = analisar("invalidos/invalido02.ml");
         assertFalse(p.getErrors().isEmpty(), "o erro nao foi detectado");
-        // TODO: conferir a linha do erro
+        assertEquals(2, p.getErrors().get(0).line(), "Erro esperado na linha 2 (parentese/chave desbalanceada)");
     }
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void invalido03() {
         Parser p = analisar("invalidos/invalido03.ml");
         assertFalse(p.getErrors().isEmpty(), "o erro nao foi detectado");
-        // TODO: conferir a linha do erro
+        assertEquals(3, p.getErrors().get(0).line(), "Erro esperado na linha 3 (token invalido em comando)");
     }
 
     // ------------------------------------------------------------------
     //  MULTIPLOS ERROS NUMA RODADA (modo panico)
     // ------------------------------------------------------------------
 
-    @Disabled("TODO: escrever o programa e implementar o parser")
     @Test void multiplosErros() {
         Parser p = analisar("invalidos/multiplos-erros.ml");
-        assertTrue(p.getErrors().size() >= 2, listar(p));
-        // TODO: conferir as linhas de cada erro esperado
+        assertTrue(p.getErrors().size() >= 3, listar(p));
+        
+        assertEquals(2, p.getErrors().get(0).line(), "Primeiro erro na linha 2");
+        assertEquals(4, p.getErrors().get(1).line(), "Segundo erro na linha 4");
+        assertEquals(10, p.getErrors().get(2).line(), "Terceiro erro na linha 10");
     }
 }

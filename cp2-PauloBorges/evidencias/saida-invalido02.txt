@@ -1,0 +1,6 @@
+﻿
+--- 3 erro(s) sint�tico(s) ---
+Erro sintatico (linha 2, coluna 15): Token inesperado apos expressao de potencia: LBRACE
+Erro sintatico (linha 3, coluna 17): esperava LBRACE, achei SEMI
+Erro sintatico (linha 3, coluna 17): Comando invalido dentro do bloco: SEMI
+REJEITADO (3 erro(s))

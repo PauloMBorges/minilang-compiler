@@ -1,0 +1,4 @@
+﻿
+--- 1 erro(s) sint�tico(s) ---
+Erro sintatico (linha 3, coluna 5): Comando invalido dentro do bloco: INT_LIT
+REJEITADO (1 erro(s))

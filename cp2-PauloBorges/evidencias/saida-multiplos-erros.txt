@@ -1,0 +1,6 @@
+﻿
+--- 3 erro(s) sint�tico(s) ---
+Erro sintatico (linha 2, coluna 15): Token inesperado apos expressao de potencia: INT_LIT
+Erro sintatico (linha 4, coluna 12): Esperava operador unario ou fator, achei SEMI
+Erro sintatico (linha 10, coluna 5): esperava SEMI, achei PRINT
+REJEITADO (3 erro(s))

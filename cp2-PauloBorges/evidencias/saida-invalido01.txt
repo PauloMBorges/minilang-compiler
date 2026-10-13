@@ -1,0 +1,6 @@
+﻿
+--- 3 erro(s) sint�tico(s) ---
+Erro sintatico (linha 3, coluna 5): Token inesperado apos expressao de potencia: PRINT
+Erro sintatico (linha 3, coluna 12): esperava SEMI, achei RPAREN
+Erro sintatico (linha 3, coluna 12): Comando invalido dentro do bloco: RPAREN
+REJEITADO (3 erro(s))
