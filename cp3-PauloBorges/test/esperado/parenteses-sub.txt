@@ -1,0 +1,5 @@
+BinExpr(op="-")
+  IdExpr(id="a")
+  BinExpr(op="-")
+    IdExpr(id="b")
+    IdExpr(id="c")
