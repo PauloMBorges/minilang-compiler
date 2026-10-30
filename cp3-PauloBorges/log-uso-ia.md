@@ -74,3 +74,12 @@
   - `test/esperado/README.md` com a convenção de nomes (os arquivos esperados serão escritos à mão);
   - template de `ast-design.md` com as seções pedidas no enunciado, e atualização dos `README.md`.
 
+### 2026-10-29 — Revisões e fechamento do CP3
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** revisão do parser que devolve a AST, do AstTest e do AstUnparser (escritos por mim) e fechamento da entrega.
+- **Prompt (resumo):** envio do código para revisão; 
+- **O que foi gerado:**
+  - revisão do Parser: apontou o CharLiteral (lexema sem aspas, usar charAt(0)) e o VOID aceito em parseTipo; as correções foram feitas por mim;
+  - AstTest: @Disabled temporário nos testes de ida e volta e mensagens de falha com a lista de erros; a lógica dos helpers é minha;
+  - AstUnparser: parênteses no operando de UnExpr, depois de a revisão mostrar que (-a) ** b voltaria como -a ** b; o resto do reimpressor é meu;
+  - Main com os modos --arvore e --reimprimir; README do CP3 e da raiz.

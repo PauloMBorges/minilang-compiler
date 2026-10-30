@@ -165,13 +165,10 @@ public class AstTest {
         assertEquals(normalizar(arvoreDe(original)), normalizar(arvoreDe(r1)), "a arvore mudou depois de reimprimir");
     }
 
-    @Disabled("passo 6: AstUnparser ainda nao implementado")
     @Test void idaEVoltaValido01() throws IOException { idaEVolta("validos/valido01.ml"); }
 
-    @Disabled("passo 6: AstUnparser ainda nao implementado")
     @Test void idaEVoltaValido02() throws IOException { idaEVolta("validos/valido02.ml"); }
 
-    @Disabled("passo 6: AstUnparser ainda nao implementado")
     @Test void idaEVoltaValido03() throws IOException { idaEVolta("validos/valido03.ml"); }
 
     // ------------------------------------------------------------------

@@ -8,11 +8,12 @@ Compilador incremental da disciplina. Cada checkpoint fica numa pasta própria, 
 |---|---|---|
 | CP1 — Análise léxica | [`cp1-PauloBorges/`](cp1-PauloBorges/) | Especificação léxica, scanner manual, AFDs, testes |
 | CP2 — Gramática e parser recursivo descendente | [`cp2-PauloBorges/`](cp2-PauloBorges/) | Gramática LL(1) com FIRST/FOLLOW, parser reconhecedor com modo pânico, testes |
+| CP3 — AST e Visitor | [`cp3-PauloBorges/`](cp3-PauloBorges/) | Hierarquia de nós, Visitor (impressor e reimpressor), parser que devolve a AST, testes |
 
 Cada pasta é um projeto Maven separado. Para compilar e testar um checkpoint, entre na pasta dele:
 
 ```bash
-cd cp2-PauloBorges
+cd cp3-PauloBorges
 mvn test
 ```
 

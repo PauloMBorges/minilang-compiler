@@ -1,0 +1,58 @@
+Program
+  VarDecl(isConst=true, id="PI")
+    PrimitiveType(name="double")
+    DoubleLiteral(lexeme="3.14159")
+  ProcDecl(id="main")
+    BlockCmd
+      DeclCmd
+        VarDecl(isConst=false, id="a")
+          PrimitiveType(name="int")
+      DeclCmd
+        VarDecl(isConst=false, id="b")
+          PrimitiveType(name="double")
+      DeclCmd
+        VarDecl(isConst=false, id="nome")
+          PrimitiveType(name="string")
+          StringLiteral(value="Compiladores")
+      DeclCmd
+        VarDecl(isConst=false, id="inicial")
+          PrimitiveType(name="char")
+          CharLiteral(value='P')
+      AssignCmd(id="a")
+        IntLiteral(lexeme="10")
+      DeclCmd
+        VarDecl(isConst=false, id="c")
+          PrimitiveType(name="int")
+          BinExpr(op="+")
+            IdExpr(id="a")
+            BinExpr(op="*")
+              IntLiteral(lexeme="5")
+              BinExpr(op="**")
+                IntLiteral(lexeme="2")
+                BinExpr(op="**")
+                  IntLiteral(lexeme="2")
+                  IntLiteral(lexeme="3")
+      DeclCmd
+        VarDecl(isConst=false, id="ok")
+          PrimitiveType(name="bool")
+          BinExpr(op="||")
+            UnExpr(op="!")
+              BinExpr(op="!=")
+                IdExpr(id="a")
+                IntLiteral(lexeme="10")
+            BinExpr(op="<")
+              UnExpr(op="-")
+                IdExpr(id="a")
+              IntLiteral(lexeme="0")
+      DeclCmd
+        VarDecl(isConst=false, id="d")
+          PrimitiveType(name="int")
+          BinExpr(op="/")
+            BinExpr(op="%")
+              BinExpr(op="+")
+                IdExpr(id="a")
+                IntLiteral(lexeme="1")
+              IntLiteral(lexeme="3")
+            IntLiteral(lexeme="2")
+      PrintCmd
+        IdExpr(id="c")

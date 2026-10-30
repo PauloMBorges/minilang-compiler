@@ -216,8 +216,3 @@ Program
      1. A cadeia de precedência de expressões (Expressao → ExpOR → ... → Fator → INT_LIT): Na árvore de derivação, o valor 0 desce por todos os não-terminais de precedência. Na AST, todos esses nós sintáticos foram descartados e substituídos diretamente por um único nó folha IntLiteral(lexeme="0")
      2. Os símbolos de pontuação e delimitadores (como os parênteses em (i < n) ou as chaves { }): Eles foram consumidos pelo parser por meio de chamadas match(), mas não viraram nós na AST, pois a própria hierarquia de pai e filho da árvore (WhileCmd contendo a condição e o BlockCmd) já garante o escopo e o agrupamento.
      3. O não-terminal de fatoração CmdIdResto na atribuição: Na derivação, para i = i + 1;, a gramática derivou Comando → CmdId → ID CmdIdResto. Na AST, o CmdId e o CmdIdResto sumiram; a constatação do sinal = serviu apenas para o parser decidir instanciar imediatamente um único nó concreto AssignCmd.
----
-
-## 7. O segundo visitor exigiu mudar algum nó?
-
-<!-- TODO: "não" ou o que faltava no desenho original e o que mudou (Seção 3.2 do enunciado). -->
