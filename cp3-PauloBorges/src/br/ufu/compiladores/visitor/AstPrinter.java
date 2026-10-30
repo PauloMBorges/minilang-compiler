@@ -34,16 +34,12 @@ public class AstPrinter implements Visitor<Void> {
     private StringBuilder sb = new StringBuilder();
     private int depth = 0;
 
-    /**
-     * Retorna a árvore formatada em texto puro.
-     */
+    // Retorna a árvore formatada em texto puro.
     public String getOutput() {
         return sb.toString();
     }
 
-    /**
-     * Auxiliar para imprimir uma linha com a indentação correta.
-     */
+    // Auxiliar para imprimir uma linha com a indentação correta
     private void printLine(String text) {
         for (int i = 0; i < depth; i++) {
             sb.append("  ");
