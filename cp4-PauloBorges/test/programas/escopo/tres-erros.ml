@@ -1,3 +1,12 @@
-# tres-erros.ml: Pelo menos tres erros reportados numa rodada, na ordem do texto.
-# Saida esperada: test/esperado/tres-erros.txt (escrita a mao, antes de rodar a passada)
-# TODO: programa
+# tres-erros.ml
+int x = 1;
+int x = 2; # ERRO 1 (redeclaracao global)
+
+void main() {
+    print(y); # ERRO 2 (nao declarado)
+    
+    if (x > 0) {
+        int z = 10;
+        int z = 20; # ERRO 3 (redeclaracao local)
+    }
+}

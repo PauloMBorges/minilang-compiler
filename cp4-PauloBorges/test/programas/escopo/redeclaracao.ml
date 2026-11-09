@@ -1,3 +1,7 @@
-# redeclaracao.ml: OBRIGATORIO. Mesmo nome declarado duas vezes no mesmo escopo (a primeira declaracao permanece).
-# Saida esperada: test/esperado/redeclaracao.txt (escrita a mao, antes de rodar a passada)
-# TODO: programa
+# redeclaracao.ml
+int a = 1;
+int a = 2; # ERRO: 'a' ja declarado
+
+void main() {
+    print(a); # Resolve para o da linha 2
+}

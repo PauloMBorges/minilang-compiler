@@ -1,3 +1,7 @@
-# procedimento-recursivo.ml: Procedimento que chama a si mesmo (o nome e declarado antes do openScope).
-# Saida esperada: test/esperado/procedimento-recursivo.txt (escrita a mao, antes de rodar a passada)
-# TODO: programa
+# procedimento-recursivo.ml
+void loop(int n) {
+    if (n > 0) {
+        print(n);
+        loop(n - 1); # OK: o nome 'loop' ja esta no ambiente
+    }
+}

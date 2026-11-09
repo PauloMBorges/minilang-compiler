@@ -82,7 +82,16 @@ O construtor já abre o escopo global (`level() == 0`). Um `closeScope` que tent
 
 ## 5. Formato da saída da passada
 
-<!-- TODO: formato determinístico das mensagens de erro (cada uma com linha e nome), por exemplo:
-       linha 2: 'a' já declarado neste escopo (linha 1)
-       linha 4: 'b' não declarado
-     e o formato das resoluções usado nos testes (uma linha por uso, ex.: x@7 -> x@5). -->
+**Erros**, um por linha, na ordem em que aparecem no texto:
+- `linha X: 'nome' já declarado neste escopo (linha Y)`
+- `linha X: 'nome' não declarado`
+
+**Resoluções**, uma por uso que achou declaração, na ordem do texto, no formato `nome@linhaDoUso -> nome@linhaDaDeclaração`.
+
+Um uso não declarado não aparece nas resoluções, apenas na lista de erros. Nos arquivos de saída `test/esperado/`, as resoluções são impressas primeiro e os erros depois.
+
+Exemplo de saída para o caso de sombreamento e redeclaração:
+```
+x@6 -> x@5
+linha 7: 'x' já declarado neste escopo (linha 5)
+```

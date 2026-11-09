@@ -1,3 +1,11 @@
-# sombreamento.ml: OBRIGATORIO. Valido, com sombreamento: um nome interno oculta um externo e todo uso resolve a declaracao certa.
-# Saida esperada: test/esperado/sombreamento.txt (escrita a mao, antes de rodar a passada)
-# TODO: programa
+int x = 10;
+
+int testar(int a) {
+    int y = a;
+    if (y > 0) {
+        int x = 20;
+        print(x);
+    }
+    print(x);
+    return y;
+}
