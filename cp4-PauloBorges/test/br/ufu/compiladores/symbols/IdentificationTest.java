@@ -4,6 +4,7 @@ import br.ufu.compiladores.ast.Program;
 import br.ufu.compiladores.lexer.Scanner;
 import br.ufu.compiladores.parser.Parser;
 import br.ufu.compiladores.visitor.IdentificationVisitor;
+import br.ufu.compiladores.visitor.ResolutionPrinter;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,17 +19,15 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /*
- * Suite do Checkpoint 4: a passada de identificacao (Secao 5 do enunciado).
+ * Suite do Checkpoint 4: a passada de identificacao (Secao 5 do enunciado)
  *
  * Cada programa de test/programas/escopo/ tem a saida esperada em
- * test/esperado/<mesmo nome>.txt, escrita a mao a partir do desenho da
- * secao 1 do escopo-design.md, ANTES de rodar a passada.
+ * test/esperado/<mesmo nome>.txt, escrita a partir do desenho da
+ * secao 1 do escopo-design.md, antes de rodar a passada.
  *
  * Saida comparada (saidaDe): as resolucoes dos usos, uma por linha, seguidas
  * dos erros, um por linha, na ordem do texto. Formatos na secao 5 do
  * escopo-design.md.
- *
- * Tudo desativado (@Disabled) ate a passada e os arquivos esperados existirem.
  */
 public class IdentificationTest {
 
@@ -89,8 +88,11 @@ public class IdentificationTest {
      */
     private static String resolucoesDe(String fonte) {
         return comTimeout("resolucoesDe", () -> {
-            // TODO
-            throw new UnsupportedOperationException("TODO: resolucoesDe");
+            Program ast = arvoreDe(fonte);
+            ast.accept(new IdentificationVisitor());   // decora a arvore
+            ResolutionPrinter printer = new ResolutionPrinter();
+            ast.accept(printer);                       // le os campos decl
+            return printer.getOutput();
         });
     }
 
@@ -114,50 +116,50 @@ public class IdentificationTest {
     // ------------------------------------------------------------------
 
     /** valido com sombreamento: nenhum erro e todo uso resolve a declaracao certa. */
-    @Disabled("TODO") @Test void validoComSombreamento() throws IOException {
+    @Test void validoComSombreamento() throws IOException {
         assertEquals("", normalizar(errosDe(fonte("escopo/sombreamento.ml"))));
         confere("sombreamento");
     }
 
-    @Disabled("TODO") @Test void redeclaracao() throws IOException { confere("redeclaracao"); }
+    @Test void redeclaracao() throws IOException { confere("redeclaracao"); }
 
-    @Disabled("TODO") @Test void naoDeclarado() throws IOException { confere("nao-declarado"); }
+    @Test void naoDeclarado() throws IOException { confere("nao-declarado"); }
 
     // ------------------------------------------------------------------
     //  UM PROGRAMA POR DECISAO DE PROJETO (secao 4 do escopo-design.md)
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void decisaoSombreamento() throws IOException { confere("decisao-sombreamento"); }
+    @Test void decisaoSombreamento() throws IOException { confere("decisao-sombreamento"); }
 
-    @Disabled("TODO") @Test void decisaoDeclararAntesDeUsar() throws IOException { confere("decisao-declarar-antes"); }
+    @Test void decisaoDeclararAntesDeUsar() throws IOException { confere("decisao-declarar-antes"); }
 
-    @Disabled("TODO") @Test void decisaoRecursaoMutua() throws IOException { confere("decisao-recursao-mutua"); }
+    @Test void decisaoRecursaoMutua() throws IOException { confere("decisao-recursao-mutua"); }
 
-    @Disabled("TODO") @Test void decisaoParametrosECorpo() throws IOException { confere("decisao-parametros-corpo"); }
+    @Test void decisaoParametrosECorpo() throws IOException { confere("decisao-parametros-corpo"); }
 
-    @Disabled("TODO") @Test void decisaoEspacoDeNomes() throws IOException { confere("decisao-espaco-nomes"); }
+    @Test void decisaoEspacoDeNomes() throws IOException { confere("decisao-espaco-nomes"); }
 
     // ------------------------------------------------------------------
     //  CASOS EXIGIDOS
     // ------------------------------------------------------------------
 
     /** pelo menos tres erros numa rodada, na ordem do texto. */
-    @Disabled("TODO") @Test void tresErrosNaOrdem() throws IOException {
+    @Test void tresErrosNaOrdem() throws IOException {
         assertTrue(normalizar(errosDe(fonte("escopo/tres-erros.ml"))).lines().count() >= 3,
                 "esperava pelo menos tres erros");
         confere("tres-erros");
     }
 
-    @Disabled("TODO") @Test void procedimentoRecursivo() throws IOException { confere("procedimento-recursivo"); }
+    @Test void procedimentoRecursivo() throws IOException { confere("procedimento-recursivo"); }
 
     /** o nome interno nao pode ser visto depois do fechamento do bloco. */
-    @Disabled("TODO") @Test void usoDepoisDoBloco() throws IOException { confere("uso-apos-bloco"); }
+    @Test void usoDepoisDoBloco() throws IOException { confere("uso-apos-bloco"); }
 
     // ------------------------------------------------------------------
     //  ROBUSTEZ: nenhuma entrada lanca excecao ou trava
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void passadaNuncaLancaExcecao() throws IOException {
+    @Test void passadaNuncaLancaExcecao() throws IOException {
         String[] programas = {
             "validos/valido01.ml", "validos/valido02.ml", "validos/valido03.ml",
             "escopo/sombreamento.ml", "escopo/redeclaracao.ml", "escopo/nao-declarado.ml",
