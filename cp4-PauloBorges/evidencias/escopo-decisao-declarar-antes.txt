@@ -1,0 +1,4 @@
+x@7 -> x@4
+x@8 -> x@7
+linha 2: 'a' não declarado
+linha 10: 'y' não declarado

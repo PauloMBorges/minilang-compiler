@@ -1,0 +1,4 @@
+x@8 -> x@2
+linha 3: 'x' já declarado neste escopo (linha 2)
+linha 6: 'y' não declarado
+linha 10: 'z' já declarado neste escopo (linha 9)

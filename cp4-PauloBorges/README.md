@@ -9,8 +9,9 @@ Etapa atual: **Checkpoint 4 — Tabela de símbolos e passada de identificação
 | Item do checklist (CP4) | Caminho neste checkpoint |
 |---|---|
 | Ambiente, `Symbol`, escolha da implementação e as cinco decisões de escopo | `escopo-design.md` |
-| `SymbolTable`, a implementação escolhida, `Symbol` e `SemanticError` | `src/br/ufu/compiladores/symbols/` |
-| Passada de identificação (`IdentificationVisitor`) | `src/br/ufu/compiladores/visitor/` |
+| `SymbolTable`, a implementação escolhida (`StackedSymbolTable`), `Symbol`, `SymbolCategory` e `SemanticError` | `src/br/ufu/compiladores/symbols/` |
+| Passada de identificação (`IdentificationVisitor`) e impressor das resoluções (`ResolutionPrinter`) | `src/br/ufu/compiladores/visitor/` |
+| Campo `decl` nos nós de uso (`IdExpr`, `AssignCmd`, `ReadCmd`, `CallCmd`, `CallExpr`) | `src/br/ufu/compiladores/ast/` |
 | Testes da tabela isolada | `test/br/ufu/compiladores/symbols/SymbolTableTest.java` |
 | Testes da passada (programas obrigatórios, decisões, erros, recursão, uso após o bloco) | `test/br/ufu/compiladores/symbols/IdentificationTest.java` |
 | Programas de teste do CP4 | `test/programas/escopo/` |

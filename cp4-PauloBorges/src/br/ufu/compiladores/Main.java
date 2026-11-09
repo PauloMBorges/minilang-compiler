@@ -9,6 +9,9 @@ import br.ufu.compiladores.parser.Parser;
 import br.ufu.compiladores.parser.SyntaxError;
 import br.ufu.compiladores.visitor.AstPrinter;
 import br.ufu.compiladores.visitor.AstUnparser;
+import br.ufu.compiladores.visitor.IdentificationVisitor;
+import br.ufu.compiladores.visitor.ResolutionPrinter;
+import br.ufu.compiladores.symbols.SemanticError;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,14 +24,15 @@ import java.util.List;
  *   java ... Main --tokens <arquivo-fonte>       lista de tokens (comportamento do CP1)
  *   java ... Main --arvore <arquivo-fonte>       imprime a AST (CP3, impressor de arvore)
  *   java ... Main --reimprimir <arquivo-fonte>   reimprime o codigo-fonte a partir da AST (CP3)
+ *   java ... Main --escopo <arquivo-fonte>       passada de identificacao (CP4): resolucoes e erros de escopo
  *
- * Nos modos --arvore e --reimprimir, um programa com erro nao tem arvore:
+ * Nos modos --arvore, --reimprimir e --escopo, um programa com erro nao tem arvore:
  * os erros sao relatados e nada e impresso na saida padrao alem do veredito.
  */
 public class Main {
 
     private static final String USO =
-            "Uso: Main [--tokens | --arvore | --reimprimir] <arquivo-fonte>";
+            "Uso: Main [--tokens | --arvore | --reimprimir | --escopo] <arquivo-fonte>";
 
     public static void main(String[] args) throws Exception {
         String modo = "";
@@ -52,6 +56,7 @@ public class Main {
             case "--tokens"     -> imprimirTokens(scanner);
             case "--arvore"     -> imprimirArvore(scanner);
             case "--reimprimir" -> reimprimir(scanner);
+            case "--escopo"     -> escopo(scanner);
             default -> {
                 System.err.println("Modo desconhecido: " + modo);
                 System.err.println(USO);
@@ -92,6 +97,23 @@ public class Main {
         AstUnparser unparser = new AstUnparser();
         ast.accept(unparser);
         System.out.print(unparser.getOutput());
+    }
+
+    /*
+     * CP4: roda a passada de identificacao e imprime, no formato da secao 5 do
+     * escopo-design.md, as resolucoes dos usos e depois os erros de escopo.
+     */
+    private static void escopo(Scanner scanner) {
+        Program ast = arvoreOuNull(scanner);
+        if (ast == null) return;
+        IdentificationVisitor passada = new IdentificationVisitor();
+        ast.accept(passada);
+        ResolutionPrinter resolucoes = new ResolutionPrinter();
+        ast.accept(resolucoes);
+        System.out.print(resolucoes.getOutput());
+        for (SemanticError e : passada.getErrors()) {
+            System.out.println(e);
+        }
     }
 
     /*

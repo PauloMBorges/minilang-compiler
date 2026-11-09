@@ -6,7 +6,6 @@ import br.ufu.compiladores.parser.Parser;
 import br.ufu.compiladores.visitor.IdentificationVisitor;
 import br.ufu.compiladores.visitor.ResolutionPrinter;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 

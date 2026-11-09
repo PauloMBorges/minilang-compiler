@@ -1,0 +1,51 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------< br.ufu.compiladores:minilang-compiler-cp4 >--------------
+[INFO] Building MiniLang Compiler 0.4.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ minilang-compiler-cp4 ---
+[INFO] Deleting D:\Repos\minilang-compiler\cp4-PauloBorges\target
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ minilang-compiler-cp4 ---
+[INFO] skip non existing resourceDirectory D:\Repos\minilang-compiler\cp4-PauloBorges\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ minilang-compiler-cp4 ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 48 source files with javac [debug release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ minilang-compiler-cp4 ---
+[INFO] skip non existing resourceDirectory D:\Repos\minilang-compiler\cp4-PauloBorges\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ minilang-compiler-cp4 ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 17] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ minilang-compiler-cp4 ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.ufu.compiladores.ast.AstTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.120 s -- in br.ufu.compiladores.ast.AstTest
+[INFO] Running br.ufu.compiladores.lexer.ScannerTest
+[INFO] Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in br.ufu.compiladores.lexer.ScannerTest
+[INFO] Running br.ufu.compiladores.parser.ParserTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in br.ufu.compiladores.parser.ParserTest
+[INFO] Running br.ufu.compiladores.symbols.IdentificationTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s -- in br.ufu.compiladores.symbols.IdentificationTest
+[INFO] Running br.ufu.compiladores.symbols.SymbolTableTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in br.ufu.compiladores.symbols.SymbolTableTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 65, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.311 s
+[INFO] Finished at: 2026-11-09T20:39:13-03:00
+[INFO] ------------------------------------------------------------------------
