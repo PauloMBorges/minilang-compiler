@@ -98,4 +98,13 @@
   - programas de `test/programas/escopo/` só com um comentário dizendo o que cada um deve cobrir (as saídas esperadas serão escritas à mão);
   - template de `escopo-design.md` com as seções pedidas no enunciado e atualização dos `README.md`.
 
-
+### 2026-11-09 — Revisões e fechamento do CP4
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** revisão do escopo-design.md, da tabela, da passada e dos testes (projetados e escritos por mim) e fechamento da entrega.
+- **Prompt (resumo):** envio de cada parte para revisão; pedidos de correção de erros de compilação; no fim, a parte de fechamento.
+- **O que foi gerado:**
+  - revisão das seções 1 a 5 do escopo-design.md; reescrita do texto das seções 3 e 4 a pedido, mantendo as minhas decisões;
+  - correções de compilação: tipo genérico da pilha no StackedSymbolTable; nomes de campo (id, block) no IdentificationVisitor e no ResolutionPrinter; a lógica dos dois visitors é minha;
+  - SymbolTableTest: nó concreto no helper simbolo e assert do declare no teste de sombreamento; os testes são meus;
+  - helper resolucoesDe do IdentificationTest (roda a passada e o ResolutionPrinter);
+  - Main com o modo --escopo e README do CP4.
