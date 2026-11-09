@@ -11,8 +11,6 @@ package br.ufu.compiladores.symbols;
  *  - closeScope sem escopo aberto: comportamento documentado em
  *    escopo-design.md, nunca uma NullPointerException sem explicacao.
  *
- * A passada de identificacao depende so desta interface, nunca da classe
- * concreta (exceto na linha que cria a tabela).
  */
 public interface SymbolTable {
 
