@@ -1,0 +1,33 @@
+Program
+  FuncDecl(id="somar")
+    PrimitiveType(name="int")
+    Param(id="a")
+      PrimitiveType(name="int")
+    Param(id="b")
+      PrimitiveType(name="int")
+    BlockCmd
+      ReturnCmd
+        BinExpr(op="+")
+          IdExpr(id="a")
+          IdExpr(id="b")
+  ProcDecl(id="imprimirSoma")
+    Param(id="a")
+      PrimitiveType(name="int")
+    Param(id="b")
+      PrimitiveType(name="int")
+    BlockCmd
+      DeclCmd
+        VarDecl(isConst=false, id="resultado")
+          PrimitiveType(name="int")
+      AssignCmd(id="resultado")
+        CallExpr(id="somar")
+          IdExpr(id="a")
+          IdExpr(id="b")
+      PrintCmd
+        IdExpr(id="resultado")
+      ReturnCmd
+  ProcDecl(id="main")
+    BlockCmd
+      CallCmd(id="imprimirSoma")
+        IntLiteral(lexeme="10")
+        IntLiteral(lexeme="20")

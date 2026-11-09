@@ -1,0 +1,18 @@
+# Build Maven
+target/
+
+# Arquivos compilados Java
+*.class
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+
+# SO
+.DS_Store
+Thumbs.db
