@@ -104,18 +104,18 @@ public class TypeCheckerTest {
     // ------------------------------------------------------------------
 
     /** valido com todos os tipos e comandos: nenhuma mensagem. */
-    @Disabled("TODO") @Test void validoCompleto() throws IOException { confere("valido-completo"); }
+    @Test void validoCompleto() throws IOException { confere("valido-completo"); }
 
     @Test void erroEmExpressao() throws IOException { confere("erro-expressao"); }
 
     @Test void condicaoNaoBooleana() throws IOException { confere("cond_int"); }
 
-    @Disabled("TODO") @Test void returnIncompativel() throws IOException { confere("return-incompativel"); }
+    @Test void returnIncompativel() throws IOException { confere("return-incompativel"); }
 
     /** aridade e tipo de argumento. */
-    @Disabled("TODO") @Test void chamadaErrada() throws IOException { confere("chamada-errada"); }
+    @Test void chamadaErrada() throws IOException { confere("chamada-errada"); }
 
-    @Disabled("TODO") @Test void procedimentoComoExpressao() throws IOException { confere("proc-como-expressao"); }
+    @Test void procedimentoComoExpressao() throws IOException { confere("proc-como-expressao"); }
 
     /** varios erros numa rodada, em ordem, sem cascata. */
     @Test void variosErrosSemCascata() throws IOException { confere("varios-erros"); }
@@ -124,10 +124,10 @@ public class TypeCheckerTest {
     //  FUNCOES
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void funcaoRecursiva() throws IOException { confere("funcao-recursiva"); }
+    @Test void funcaoRecursiva() throws IOException { confere("funcao-recursiva"); }
 
     /** mutuamente recursiva: mostra a decisao 7 (permitida ou nao). */
-    @Disabled("TODO") @Test void recursaoMutua() throws IOException { confere("recursao-mutua"); }
+    @Test void recursaoMutua() throws IOException { confere("recursao-mutua"); }
 
     /** a MiniLang nao tem funcoes aninhadas (so globais): o caso fica documentado no README. */
 
@@ -151,23 +151,23 @@ public class TypeCheckerTest {
 
     @Test void decisaoIgualdadeMista() throws IOException { confere("decisao-igualdade-mista"); }
 
-    @Disabled("TODO") @Test void decisaoFuncaoComoComando() throws IOException { confere("decisao-funcao-comando"); }
+    @Test void decisaoFuncaoComoComando() throws IOException { confere("decisao-funcao-comando"); }
 
     /** decisao 7 (recursao mutua): o programa e o recursao-mutua.txt, da secao FUNCOES. */
 
-    @Disabled("TODO") @Test void decisaoArgumentos() throws IOException { confere("decisao-argumentos"); }
+    @Test void decisaoArgumentos() throws IOException { confere("decisao-argumentos"); }
 
     @Disabled("TODO") @Test void decisaoReturnCaminhos() throws IOException { confere("decisao-return-caminhos"); }
 
-    @Disabled("TODO") @Test void decisaoSobrecarga() throws IOException { confere("decisao-sobrecarga"); }
+    @Test void decisaoSobrecarga() throws IOException { confere("decisao-sobrecarga"); }
 
-    @Disabled("TODO") @Test void decisaoFuncaoSemParenteses() throws IOException { confere("decisao-funcao-sem-parenteses"); }
+    @Test void decisaoFuncaoSemParenteses() throws IOException { confere("decisao-funcao-sem-parenteses"); }
 
     // ------------------------------------------------------------------
     //  ROBUSTEZ: nenhuma entrada lanca excecao ou trava
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void verificadorNuncaLancaExcecao() throws IOException {
+    @Test void verificadorNuncaLancaExcecao() throws IOException {
         String[] programas = {
             "valido-completo", "erro-expressao", "cond_int", "return-incompativel",
             "chamada-errada", "proc-como-expressao", "varios-erros", "funcao-recursiva",

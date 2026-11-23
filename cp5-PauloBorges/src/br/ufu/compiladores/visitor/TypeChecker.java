@@ -22,7 +22,10 @@ public class TypeChecker implements Visitor<Type> {
     private final List<SemanticError> errors = new ArrayList<>();
     private final List<SemanticError> warnings = new ArrayList<>();
 
-    // TODO: contexto (funcao corrente, variaveis que podem estar sem valor).
+    private String funcAtual;       // nome da funcao/procedimento sendo verificado
+    private Type retornoAtual;      // tipo de retorno dela (VOID para procedimento)
+
+    // TODO (6.5): variaveis que podem estar sem valor.
 
     /** Erros de tipo, na ordem em que foram encontrados. */
     public List<SemanticError> getErrors() {
@@ -44,7 +47,7 @@ public class TypeChecker implements Visitor<Type> {
         warnings.add(new SemanticError(line, "aviso: " + message));
     }
 
-    // --- Helpers de comandos ---
+    // --- Helpers de comandos e chamadas ---
 
     private void condicao(Expr cond, String comando) {
         Type t = cond.accept(this);
@@ -74,6 +77,37 @@ public class TypeChecker implements Visitor<Type> {
         return Type.ERROR;
     }
 
+    /** Confere a chamada e devolve o tipo de retorno (ERROR se nao der para saber). */
+    private Type chamada(Symbol decl, String nome, List<Expr> args, int line) {
+        List<Type> argTypes = new ArrayList<>();
+        for (Expr arg : args) {
+            argTypes.add(arg.accept(this));
+        }
+
+        if (decl == null) {
+            return Type.ERROR;
+        }
+        if (decl.category != SymbolCategory.FUNC && decl.category != SymbolCategory.PROC) {
+            erro(line, "'" + nome + "' não é função nem procedimento");
+            return Type.ERROR;
+        }
+
+        Type.FuncType ft = (Type.FuncType) decl.type;
+        if (args.size() != ft.params.size()) {
+            erro(line, "'" + nome + "' espera " + ft.params.size() + " argumento(s), recebeu " + args.size());
+        } else {
+            for (int i = 0; i < args.size(); i++) {
+                Type esperado = ft.params.get(i);
+                Type recebido = argTypes.get(i);
+                if (!Types.assignable(esperado, recebido)) {
+                    erro(line, "argumento " + (i + 1) + " de '" + nome + "': esperado "
+                            + esperado + ", veio " + recebido);
+                }
+            }
+        }
+        return ft.returnType;
+    }
+
     // --- Programa e declaracoes ---
 
     @Override
@@ -99,6 +133,8 @@ public class TypeChecker implements Visitor<Type> {
 
     @Override
     public Type visitFuncDecl(FuncDecl n) {
+        funcAtual = n.id;
+        retornoAtual = n.type.accept(this);
         for (Cmd c : n.body.cmds) {
             c.accept(this);
         }
@@ -107,6 +143,8 @@ public class TypeChecker implements Visitor<Type> {
 
     @Override
     public Type visitProcDecl(ProcDecl n) {
+        funcAtual = n.id;
+        retornoAtual = Type.VOID;
         for (Cmd c : n.body.cmds) {
             c.accept(this);
         }
@@ -179,8 +217,28 @@ public class TypeChecker implements Visitor<Type> {
         return Type.VOID;
     }
 
-    @Override public Type visitCallCmd(CallCmd n)  { /* TODO 6.3 */ return Type.VOID; }
-    @Override public Type visitReturn(ReturnCmd n) { /* TODO 6.3 */ return Type.VOID; }
+    @Override
+    public Type visitCallCmd(CallCmd n) {
+        chamada(n.decl, n.id, n.args, n.line());
+        return Type.VOID;
+    }
+
+    @Override
+    public Type visitReturn(ReturnCmd n) {
+        if (n.expr != null) {
+            Type t = n.expr.accept(this);
+            if (retornoAtual == Type.VOID) {
+                erro(n.line(), "procedimento '" + funcAtual + "' não devolve valor");
+            } else if (!Types.assignable(retornoAtual, t)) {
+                erro(n.line(), "'" + funcAtual + "' devolve " + retornoAtual + ", mas 'return' dá " + t);
+            }
+        } else {
+            if (retornoAtual != Type.VOID) {
+                erro(n.line(), "'return' sem valor em '" + funcAtual + "', que devolve " + retornoAtual);
+            }
+        }
+        return Type.VOID;
+    }
 
     @Override
     public Type visitPrint(PrintCmd n) {
@@ -233,7 +291,7 @@ public class TypeChecker implements Visitor<Type> {
             return n.type = Type.ERROR;
         }
         if (n.decl.category == SymbolCategory.FUNC || n.decl.category == SymbolCategory.PROC) {
-            erro(n.line(), "'" + n.id + "' é função: não pode ser usado sem parênteses");
+            erro(n.line(), "'" + n.id + "' é " + nomeCategoria(n.decl.category) + ": não pode ser usado sem parênteses");
             return n.type = Type.ERROR;
         }
         return n.type = n.decl.type;
@@ -262,9 +320,11 @@ public class TypeChecker implements Visitor<Type> {
 
     @Override
     public Type visitCallExpr(CallExpr n) {
-        for (Expr arg : n.args) {
-            arg.accept(this);
+        Type t = chamada(n.decl, n.id, n.args, n.line());
+        if (n.decl != null && n.decl.category == SymbolCategory.PROC) {
+            erro(n.line(), "'" + n.id + "' é procedimento e não devolve valor");
+            t = Type.ERROR;
         }
-        return n.type = Type.ERROR;
+        return n.type = t;
     }
 }
