@@ -106,7 +106,7 @@ public class TypeCheckerTest {
     /** valido com todos os tipos e comandos: nenhuma mensagem. */
     @Disabled("TODO") @Test void validoCompleto() throws IOException { confere("valido-completo"); }
 
-    @Disabled("TODO") @Test void erroEmExpressao() throws IOException { confere("erro-expressao"); }
+    @Test void erroEmExpressao() throws IOException { confere("erro-expressao"); }
 
     @Disabled("TODO") @Test void condicaoNaoBooleana() throws IOException { confere("cond_int"); }
 
