@@ -2,6 +2,7 @@ package br.ufu.compiladores.visitor;
 
 import br.ufu.compiladores.ast.*;
 import br.ufu.compiladores.symbols.SemanticError;
+import br.ufu.compiladores.symbols.Symbol;
 import br.ufu.compiladores.symbols.SymbolCategory;
 import br.ufu.compiladores.types.Type;   // tipo semantico (nao o ast.Type)
 import br.ufu.compiladores.types.Types;
@@ -43,6 +44,36 @@ public class TypeChecker implements Visitor<Type> {
         warnings.add(new SemanticError(line, "aviso: " + message));
     }
 
+    // --- Helpers de comandos ---
+
+    private void condicao(Expr cond, String comando) {
+        Type t = cond.accept(this);
+        if (t != Type.BOOL && t != Type.ERROR) {
+            erro(cond.line(), "condição de '" + comando + "' deve ser bool, mas é " + t);
+        }
+    }
+
+    private String nomeCategoria(SymbolCategory cat) {
+        switch (cat) {
+            case CONST: return "constante";
+            case FUNC:  return "função";
+            case PROC:  return "procedimento";
+            default:    return "variável";
+        }
+    }
+
+    /** Confere se o alvo (de atribuicao ou read) existe e aceita valor. */
+    private Type alvo(Symbol decl, String nome, int line) {
+        if (decl == null) {
+            return Type.ERROR;
+        }
+        if (decl.category == SymbolCategory.VAR || decl.category == SymbolCategory.PARAM) {
+            return decl.type;
+        }
+        erro(line, "'" + nome + "' é " + nomeCategoria(decl.category) + ": não pode receber valor");
+        return Type.ERROR;
+    }
+
     // --- Programa e declaracoes ---
 
     @Override
@@ -56,7 +87,12 @@ public class TypeChecker implements Visitor<Type> {
     @Override
     public Type visitVarDecl(VarDecl n) {
         if (n.init != null) {
-            n.init.accept(this);
+            Type initType = n.init.accept(this);
+            Type declType = n.type.accept(this);
+            if (!Types.assignable(declType, initType)) {
+                erro(n.line(), "tipos incompatíveis na inicialização de '" + n.id + "': "
+                        + declType + " recebe " + initType);
+            }
         }
         return Type.VOID;
     }
@@ -86,7 +122,7 @@ public class TypeChecker implements Visitor<Type> {
 
     @Override
     public Type visitPrimitiveType(PrimitiveType n) {
-        return Type.VOID;
+        return Types.of(n.name);
     }
 
     // --- Comandos ---
@@ -105,14 +141,64 @@ public class TypeChecker implements Visitor<Type> {
         return Type.VOID;
     }
 
-    @Override public Type visitAssign(AssignCmd n) { /* TODO 6.2 */ return Type.VOID; }
-    @Override public Type visitIf(IfCmd n)         { /* TODO 6.2 */ return Type.VOID; }
-    @Override public Type visitElif(ElifBranch n)  { /* TODO 6.2 */ return Type.VOID; }
-    @Override public Type visitWhile(WhileCmd n)   { /* TODO 6.2 */ return Type.VOID; }
+    @Override
+    public Type visitAssign(AssignCmd n) {
+        Type exprType = n.expr.accept(this);
+        Type targetType = alvo(n.decl, n.id, n.line());
+        if (!Types.assignable(targetType, exprType)) {
+            erro(n.line(), "tipos incompatíveis na atribuição a '" + n.id + "': "
+                    + targetType + " recebe " + exprType);
+        }
+        return Type.VOID;
+    }
+
+    @Override
+    public Type visitIf(IfCmd n) {
+        condicao(n.cond, "if");
+        n.thenCmd.accept(this);
+        for (ElifBranch elif : n.elifs) {
+            elif.accept(this);
+        }
+        if (n.elseCmd != null) {
+            n.elseCmd.accept(this);
+        }
+        return Type.VOID;
+    }
+
+    @Override
+    public Type visitElif(ElifBranch n) {
+        condicao(n.cond, "elif");
+        n.block.accept(this);
+        return Type.VOID;
+    }
+
+    @Override
+    public Type visitWhile(WhileCmd n) {
+        condicao(n.cond, "while");
+        n.body.accept(this);
+        return Type.VOID;
+    }
+
     @Override public Type visitCallCmd(CallCmd n)  { /* TODO 6.3 */ return Type.VOID; }
     @Override public Type visitReturn(ReturnCmd n) { /* TODO 6.3 */ return Type.VOID; }
-    @Override public Type visitPrint(PrintCmd n)   { /* TODO 6.2 */ return Type.VOID; }
-    @Override public Type visitRead(ReadCmd n)     { /* TODO 6.2 */ return Type.VOID; }
+
+    @Override
+    public Type visitPrint(PrintCmd n) {
+        n.expr.accept(this);
+        return Type.VOID;
+    }
+
+    @Override
+    public Type visitRead(ReadCmd n) {
+        Type targetType = alvo(n.decl, n.id, n.line());
+        if (targetType != Type.ERROR
+                && targetType != Type.INT
+                && targetType != Type.DOUBLE
+                && targetType != Type.CHAR) {
+            erro(n.line(), "'read' não aceita '" + n.id + "', que é " + targetType);
+        }
+        return Type.VOID;
+    }
 
     // --- Expressoes ---
 

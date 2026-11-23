@@ -108,7 +108,7 @@ public class TypeCheckerTest {
 
     @Test void erroEmExpressao() throws IOException { confere("erro-expressao"); }
 
-    @Disabled("TODO") @Test void condicaoNaoBooleana() throws IOException { confere("cond_int"); }
+    @Test void condicaoNaoBooleana() throws IOException { confere("cond_int"); }
 
     @Disabled("TODO") @Test void returnIncompativel() throws IOException { confere("return-incompativel"); }
 
@@ -118,7 +118,7 @@ public class TypeCheckerTest {
     @Disabled("TODO") @Test void procedimentoComoExpressao() throws IOException { confere("proc-como-expressao"); }
 
     /** varios erros numa rodada, em ordem, sem cascata. */
-    @Disabled("TODO") @Test void variosErrosSemCascata() throws IOException { confere("varios-erros"); }
+    @Test void variosErrosSemCascata() throws IOException { confere("varios-erros"); }
 
     // ------------------------------------------------------------------
     //  FUNCOES
@@ -141,15 +141,15 @@ public class TypeCheckerTest {
     //  UM PROGRAMA POR DECISAO DE PROJETO (Parte 1)
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void decisaoIntDouble() throws IOException { confere("decisao-int-double"); }
+    @Test void decisaoIntDouble() throws IOException { confere("decisao-int-double"); }
 
-    @Disabled("TODO") @Test void decisaoCharInt() throws IOException { confere("decisao-char-int"); }
+    @Test void decisaoCharInt() throws IOException { confere("decisao-char-int"); }
 
-    @Disabled("TODO") @Test void decisaoBoolAritmetica() throws IOException { confere("decisao-bool-aritmetica"); }
+    @Test void decisaoBoolAritmetica() throws IOException { confere("decisao-bool-aritmetica"); }
 
-    @Disabled("TODO") @Test void decisaoString() throws IOException { confere("decisao-string"); }
+    @Test void decisaoString() throws IOException { confere("decisao-string"); }
 
-    @Disabled("TODO") @Test void decisaoIgualdadeMista() throws IOException { confere("decisao-igualdade-mista"); }
+    @Test void decisaoIgualdadeMista() throws IOException { confere("decisao-igualdade-mista"); }
 
     @Disabled("TODO") @Test void decisaoFuncaoComoComando() throws IOException { confere("decisao-funcao-comando"); }
 
