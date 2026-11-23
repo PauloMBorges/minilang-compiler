@@ -1,0 +1,3 @@
+linha 5: tipos incompatíveis em '%': double e int
+linha 6: operando incompatível em '-': string
+linha 7: operando incompatível em '!': int

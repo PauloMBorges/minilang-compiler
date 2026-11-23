@@ -1,3 +1,9 @@
-# decisao-igualdade-mista.txt: Decisao 5: == entre tipos diferentes: quais pares sao aceitos?
-# Saida esperada: test/esperado/decisao-igualdade-mista.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    int n = 1;
+    double d = 1.0;
+    char c = 'a';
+    bool b = true;
+    bool r1 = n == d;
+    bool r2 = c == n;
+    bool r3 = b == n;
+}

@@ -1,0 +1,1 @@
+linha 8: tipos incompatíveis na atribuição a 'a': int recebe double

@@ -1,3 +1,11 @@
-# decisao-argumentos.txt: Decisao 8: argumentos: aceita int -> double ou exige tipo igual?
-# Saida esperada: test/esperado/decisao-argumentos.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+double metade(double x) {
+    return x / 2;
+}
+int dobro(int x) {
+    return x * 2;
+}
+void main() {
+    double r = metade(5);
+    int k = dobro(2.5);
+    print(r);
+}

@@ -1,3 +1,6 @@
-# varios-erros.txt: OBRIGATORIO. Varios erros numa rodada, em ordem, sem cascata.
-# Saida esperada: test/esperado/varios-erros.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    int n = 3;
+    string s = "oi";
+    n = (s - 1) * 2 + w;
+    n = "abc";
+}

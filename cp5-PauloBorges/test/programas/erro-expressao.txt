@@ -1,3 +1,8 @@
-# erro-expressao.txt: OBRIGATORIO. Erro de tipo numa expressao (operador sem regra para os operandos).
-# Saida esperada: test/esperado/erro-expressao.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    double d = 2.5;
+    int n = 3;
+    string s = "x";
+    double r = d % n;
+    int x = -s;
+    bool b = !n;
+}

@@ -1,3 +1,8 @@
-# decisao-bool-aritmetica.txt: Decisao 3: bool em aritmetica? (decide se um int pode ser condicao)
-# Saida esperada: test/esperado/decisao-bool-aritmetica.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    bool b = true;
+    int n = 1;
+    int x = b + 1;
+    if (n) {
+        print(n);
+    }
+}

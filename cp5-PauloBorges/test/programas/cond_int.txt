@@ -1,3 +1,13 @@
-# cond_int.txt: OBRIGATORIO. Condicao nao booleana em if/elif/while.
-# Saida esperada: test/esperado/cond_int.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    int n = 1;
+    string s = "oi";
+    double d = 1.5;
+    if (n) {
+        print(n);
+    } elif (d) {
+        print(d);
+    }
+    while (s) {
+        print(s);
+    }
+}

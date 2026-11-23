@@ -1,3 +1,30 @@
-# valido-completo.txt: OBRIGATORIO. Valido, com todos os tipos (int, double, bool, char, string) e todos os comandos; nenhuma mensagem.
-# Saida esperada: test/esperado/valido-completo.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+const int LIMITE = 10;
+int pot(int base, int exp) {
+    return base ** exp;
+}
+void mostra(string msg) {
+    print(msg);
+    return;
+}
+void main() {
+    int n = 2;
+    double d = 3.5;
+    bool ok = true;
+    char c = 'a';
+    string s = "ola";
+    int p = pot(n, 3);
+    double r = -d + n * 2.0 / 4;
+    int resto = p % 3;
+    read(n);
+    read(d);
+    read(c);
+    if (n > 0 && !ok) {
+        mostra(s + "!");
+    } elif (c <= 'z' || n == d) {
+        while (n > 0 && n < LIMITE) {
+            n = n - 1;
+        }
+    } else {
+        print(resto);
+    }
+}

@@ -1,0 +1,2 @@
+linha 7: tipos incompatíveis em '==': char e int
+linha 8: tipos incompatíveis em '==': bool e int

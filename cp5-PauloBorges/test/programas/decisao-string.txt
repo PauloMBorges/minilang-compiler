@@ -1,3 +1,7 @@
-# decisao-string.txt: Decisao 4: string com ==, < e concatenacao com +?
-# Saida esperada: test/esperado/decisao-string.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    string s1 = "oi";
+    string s2 = " mundo";
+    string s3 = s1 + s2;
+    bool eq = s1 == s2;
+    bool ord = s1 < s2;
+}

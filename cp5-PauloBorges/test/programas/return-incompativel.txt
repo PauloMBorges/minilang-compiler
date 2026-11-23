@@ -1,3 +1,12 @@
-# return-incompativel.txt: OBRIGATORIO. return incompativel com a funcao em que esta.
-# Saida esperada: test/esperado/return-incompativel.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+int f() {
+    return "oi";
+}
+int g() {
+    return;
+}
+void p() {
+    return 1;
+}
+void main() {
+    p();
+}

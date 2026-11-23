@@ -1,0 +1,3 @@
+linha 4: 'w' não declarado
+linha 4: tipos incompatíveis em '-': string e int
+linha 5: tipos incompatíveis na atribuição a 'n': int recebe string

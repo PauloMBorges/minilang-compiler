@@ -1,0 +1,1 @@
+linha 6: tipos incompatíveis em '<': string e string

@@ -1,3 +1,11 @@
-# decisao-return-caminhos.txt: Decisao 9: return em todos os caminhos: basta algum return ou ha analise de fluxo?
-# Saida esperada: test/esperado/decisao-return-caminhos.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+int sinal(int n) {
+    if (n >= 0) {
+        return 1;
+    }
+    if (n < 0) {
+        return -1;
+    }
+}
+void main() {
+    print(sinal(3));
+}

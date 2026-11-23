@@ -1,0 +1,2 @@
+linha 4: tipos incompatíveis em '+': bool e int
+linha 5: condição de 'if' deve ser bool, mas é int

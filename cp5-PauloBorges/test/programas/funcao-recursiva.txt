@@ -1,3 +1,10 @@
-# funcao-recursiva.txt: Funcao recursiva, conferida como qualquer chamada.
-# Saida esperada: test/esperado/funcao-recursiva.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+int fat(int n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * fat(n - 1);
+    }
+}
+void main() {
+    print(fat(5));
+}

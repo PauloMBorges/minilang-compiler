@@ -1,3 +1,7 @@
-# chamada-errada.txt: OBRIGATORIO. Chamada errada: aridade e tipo de argumento.
-# Saida esperada: test/esperado/chamada-errada.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void mostra(string msg, int vezes) {
+    print(msg);
+}
+void main() {
+    mostra("oi");
+    mostra(123, "nao");
+}

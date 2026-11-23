@@ -1,3 +1,6 @@
-# decisao-funcao-comando.txt: Decisao 6: funcao usada como comando: descartar o valor ou exigir o uso?
-# Saida esperada: test/esperado/decisao-funcao-comando.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+int soma(int a, int b) {
+    return a + b;
+}
+void main() {
+    soma(1, 2);
+}

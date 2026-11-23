@@ -1,3 +1,6 @@
-# decisao-funcao-sem-parenteses.txt: Decisao 11: nome de funcao sem parenteses: erro ou valor?
-# Saida esperada: test/esperado/decisao-funcao-sem-parenteses.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+int um() {
+    return 1;
+}
+void main() {
+    int x = um;
+}

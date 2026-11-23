@@ -1,0 +1,3 @@
+linha 5: 'mostra' espera 2 argumento(s), recebeu 1
+linha 6: argumento 1 de 'mostra': esperado string, veio int
+linha 6: argumento 2 de 'mostra': esperado int, veio string

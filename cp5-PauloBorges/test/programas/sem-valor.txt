@@ -1,3 +1,12 @@
-# sem-valor.txt: Variaveis que podem estar sem valor: avisos da analise conservadora.
-# Saida esperada: test/esperado/sem-valor.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+void main() {
+    int x;
+    int y;
+    int z;
+    if (true) {
+        y = 1;
+    }
+    read(z);
+    print(x);
+    print(y);
+    print(z);
+}

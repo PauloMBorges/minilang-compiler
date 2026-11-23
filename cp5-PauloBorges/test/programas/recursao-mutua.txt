@@ -1,3 +1,17 @@
-# recursao-mutua.txt: Decisao 7: recursao mutua: declaracao antecipada, duas passadas ou nao permitida?
-# Saida esperada: test/esperado/recursao-mutua.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
-# TODO: programa
+bool par(int n) {
+    if (n == 0) {
+        return true;
+    } else {
+        return impar(n - 1);
+    }
+}
+bool impar(int n) {
+    if (n == 0) {
+        return false;
+    } else {
+        return par(n - 1);
+    }
+}
+void main() {
+    print(par(4));
+}

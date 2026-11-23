@@ -124,3 +124,21 @@
   - atualização dos `README.md` (com as seções de representação, regras e mensagens marcadas como TODO).
 - **O que aceitei / alterei:** <!-- TODO -->
 
+### 2026-11-23 — Revisão das regras de tipos (Parte 1)
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** revisar o rascunho digital da Parte 1 (regras de tipagem, tabela de operadores e as 11 decisões), feito por mim antes de passar ao papel.
+- **Prompt (resumo):** "verifique se eu fiz certo; se houver algo errado, corrija; se recomendar outra decisão, pode trocar e eu avalio".
+- **O que foi gerado:**
+  - correções de forma: a linha de && e || da tabela, a coluna com o programa de teste de cada decisão
+  - regras que faltavam: ID e ID-FUNC lendo x.decl, ERRO-PROPAGA (sem cascata), DECL-INIT, DECL, FUNC, BLOCO, a aridade (m = n) nas chamadas, retornaSempre e as regras de variáveis sem valor;
+  - mudanças de decisão sugeridas: decisão 9 passou de "não checar" para a regra estrutural da Aula 13; read restrito a int, double e char; proposta de representação de double (ponto fixo) e string (comprimento + caracteres) na TAM.
+
+### 2026-11-23 — Revisão dos programas de teste e das saídas esperadas
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** revisar os programas de teste do CP5, escritos por mim a partir das regras da Parte 1, e as saídas esperadas.
+- **Prompt (resumo):** envio dos programas e pergunta sobre o formato do arquivo esperado;
+- **O que foi gerado:**
+  - verificação, pelo parser, de que os programas são sintaticamente válidos;
+  - decisao-argumentos: acrescentado um caso recusado (double passado para parâmetro int); valido-completo: acrescentada uma constante global;
+  - o formato das mensagens de erro e de aviso
+  - as saídas esperadas, derivadas das regras da Parte 1
