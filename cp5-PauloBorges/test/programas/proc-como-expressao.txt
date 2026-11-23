@@ -1,0 +1,3 @@
+# proc-como-expressao.txt: OBRIGATORIO. Procedimento usado como expressao.
+# Saida esperada: test/esperado/proc-como-expressao.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa

@@ -1,0 +1,3 @@
+# decisao-argumentos.txt: Decisao 8: argumentos: aceita int -> double ou exige tipo igual?
+# Saida esperada: test/esperado/decisao-argumentos.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa

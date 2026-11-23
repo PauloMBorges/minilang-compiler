@@ -1,0 +1,3 @@
+# valido-completo.txt: OBRIGATORIO. Valido, com todos os tipos (int, double, bool, char, string) e todos os comandos; nenhuma mensagem.
+# Saida esperada: test/esperado/valido-completo.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa

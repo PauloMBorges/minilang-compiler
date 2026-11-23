@@ -1,0 +1,2 @@
+a@6 -> a@2
+linha 3: 'a' já declarado neste escopo (linha 2)

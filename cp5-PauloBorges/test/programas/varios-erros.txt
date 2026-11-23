@@ -1,0 +1,3 @@
+# varios-erros.txt: OBRIGATORIO. Varios erros numa rodada, em ordem, sem cascata.
+# Saida esperada: test/esperado/varios-erros.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa

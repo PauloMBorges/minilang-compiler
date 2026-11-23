@@ -1,0 +1,3 @@
+# decisao-char-int.txt: Decisao 2: char com int: permitido? Tipo do resultado? E se nao couber em char?
+# Saida esperada: test/esperado/decisao-char-int.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa

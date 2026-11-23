@@ -1,0 +1,47 @@
+Program
+  ProcDecl(id="main")
+    BlockCmd
+      DeclCmd
+        VarDecl(isConst=false, id="x")
+          PrimitiveType(name="int")
+          IntLiteral(lexeme="0")
+      ReadCmd(id="x")
+      IfCmd
+        BinExpr(op=">")
+          IdExpr(id="x")
+          IntLiteral(lexeme="20")
+        BlockCmd
+          PrintCmd
+            StringLiteral(value="Acima do intervalo")
+        ElifBranch
+          BinExpr(op="&&")
+            BinExpr(op=">")
+              IdExpr(id="x")
+              IntLiteral(lexeme="10")
+            BinExpr(op="<=")
+              IdExpr(id="x")
+              IntLiteral(lexeme="20")
+          BlockCmd
+            PrintCmd
+              StringLiteral(value="Dentro do intervalo")
+        BlockCmd
+          PrintCmd
+            StringLiteral(value="Abaixo do intervalo")
+      DeclCmd
+        VarDecl(isConst=false, id="executando")
+          PrimitiveType(name="bool")
+          BoolLiteral(value=true)
+      WhileCmd
+        IdExpr(id="executando")
+        BlockCmd
+          AssignCmd(id="x")
+            BinExpr(op="-")
+              IdExpr(id="x")
+              IntLiteral(lexeme="1")
+          IfCmd
+            BinExpr(op="==")
+              IdExpr(id="x")
+              IntLiteral(lexeme="0")
+            BlockCmd
+              AssignCmd(id="executando")
+                BoolLiteral(value=false)

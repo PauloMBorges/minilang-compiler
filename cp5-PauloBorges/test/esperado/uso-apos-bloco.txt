@@ -1,0 +1,2 @@
+interna@5 -> interna@4
+linha 7: 'interna' não declarado

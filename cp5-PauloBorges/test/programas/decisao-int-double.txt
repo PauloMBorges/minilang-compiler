@@ -1,0 +1,3 @@
+# decisao-int-double.txt: Decisao 1: int -> double implicito? Em que contextos? E o inverso?
+# Saida esperada: test/esperado/decisao-int-double.txt (escrita a mao a partir da Parte 1, antes de rodar o verificador)
+# TODO: programa
