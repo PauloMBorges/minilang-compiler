@@ -7,14 +7,17 @@ import br.ufu.compiladores.lexer.Token;
 import br.ufu.compiladores.lexer.TokenType;
 import br.ufu.compiladores.parser.Parser;
 import br.ufu.compiladores.parser.SyntaxError;
+import br.ufu.compiladores.symbols.SemanticError;
 import br.ufu.compiladores.visitor.AstPrinter;
 import br.ufu.compiladores.visitor.AstUnparser;
 import br.ufu.compiladores.visitor.IdentificationVisitor;
 import br.ufu.compiladores.visitor.ResolutionPrinter;
-import br.ufu.compiladores.symbols.SemanticError;
+import br.ufu.compiladores.visitor.TypeChecker;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,14 +28,15 @@ import java.util.List;
  *   java ... Main --arvore <arquivo-fonte>       imprime a AST (CP3, impressor de arvore)
  *   java ... Main --reimprimir <arquivo-fonte>   reimprime o codigo-fonte a partir da AST (CP3)
  *   java ... Main --escopo <arquivo-fonte>       passada de identificacao (CP4): resolucoes e erros de escopo
+ *   java ... Main --tipos <arquivo-fonte>        verificacao de tipos (CP5): erros, avisos e veredito
  *
- * Nos modos --arvore, --reimprimir e --escopo, um programa com erro nao tem arvore:
- * os erros sao relatados e nada e impresso na saida padrao alem do veredito.
+ * Nos modos --arvore, --reimprimir, --escopo e --tipos, um programa com erro lexico ou sintatico
+ * nao tem arvore: os erros sao relatados e nada e impresso na saida padrao alem do veredito.
  */
 public class Main {
 
     private static final String USO =
-            "Uso: Main [--tokens | --arvore | --reimprimir | --escopo] <arquivo-fonte>";
+            "Uso: Main [--tokens | --arvore | --reimprimir | --escopo | --tipos] <arquivo-fonte>";
 
     public static void main(String[] args) throws Exception {
         String modo = "";
@@ -57,6 +61,7 @@ public class Main {
             case "--arvore"     -> imprimirArvore(scanner);
             case "--reimprimir" -> reimprimir(scanner);
             case "--escopo"     -> escopo(scanner);
+            case "--tipos"      -> tipos(scanner);
             default -> {
                 System.err.println("Modo desconhecido: " + modo);
                 System.err.println(USO);
@@ -114,6 +119,34 @@ public class Main {
         for (SemanticError e : passada.getErrors()) {
             System.out.println(e);
         }
+    }
+
+    /*
+     * CP5: roda a passada de identificacao e o verificador de tipos, imprime
+     * erros e avisos ordenados por linha e exibe o veredito final.
+     */
+    private static void tipos(Scanner scanner) {
+        Program ast = arvoreOuNull(scanner);
+        if (ast == null) return;
+
+        IdentificationVisitor identificacao = new IdentificationVisitor();
+        ast.accept(identificacao);
+
+        TypeChecker checker = new TypeChecker();
+        ast.accept(checker);
+
+        List<SemanticError> todas = new ArrayList<>(identificacao.getErrors());
+        todas.addAll(checker.getErrors());
+        todas.addAll(checker.getWarnings());
+        todas.sort(Comparator.comparingInt(SemanticError::line));
+
+        for (SemanticError e : todas) {
+            System.out.println(e);
+        }
+
+        int totalErros = identificacao.getErrors().size() + checker.getErrors().size();
+        // A geracao de codigo (CP6) so roda se totalErros == 0.
+        System.out.println(totalErros == 0 ? "TIPOS OK" : "REJEITADO (" + totalErros + " erro(s))");
     }
 
     /*
