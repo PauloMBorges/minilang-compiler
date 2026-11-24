@@ -111,7 +111,7 @@
 
 ## Checkpoint 5 — Verificação de tipos
 
-### 2026-11-23 — Estrutura de entrega do CP5 (boilerplate)
+### 2026-11-21 — Estrutura de entrega do CP5 (boilerplate)
 - **Ferramenta:** Claude
 - **Contexto/tarefa:** criar a pasta do CP5 a partir do CP4 e os esqueletos da entrega, sem escrever as regras de tipagem, sem tomar as decisões e sem implementar o verificador.
 - **Prompt (resumo):** enunciado do CP5; mesma divisão dos checkpoints anteriores: estrutura e boilerplate pela IA, projeto e implementação por mim. Escolhi o nome `types.Type` para o tipo semântico.
@@ -124,7 +124,7 @@
   - atualização dos `README.md` (com as seções de representação, regras e mensagens marcadas como TODO).
 - **O que aceitei / alterei:** <!-- TODO -->
 
-### 2026-11-23 — Revisão das regras de tipos (Parte 1)
+### 2026-11-21 — Revisão das regras de tipos (Parte 1)
 - **Ferramenta:** Claude
 - **Contexto/tarefa:** revisar o rascunho digital da Parte 1 (regras de tipagem, tabela de operadores e as 11 decisões), feito por mim antes de passar ao papel.
 - **Prompt (resumo):** "verifique se eu fiz certo; se houver algo errado, corrija; se recomendar outra decisão, pode trocar e eu avalio".
@@ -133,7 +133,7 @@
   - regras que faltavam: ID e ID-FUNC lendo x.decl, ERRO-PROPAGA (sem cascata), DECL-INIT, DECL, FUNC, BLOCO, a aridade (m = n) nas chamadas, retornaSempre e as regras de variáveis sem valor;
   - mudanças de decisão sugeridas: decisão 9 passou de "não checar" para a regra estrutural da Aula 13; read restrito a int, double e char; proposta de representação de double (ponto fixo) e string (comprimento + caracteres) na TAM.
 
-### 2026-11-23 — Revisão dos programas de teste e das saídas esperadas
+### 2026-11-22 — Revisão dos programas de teste e das saídas esperadas
 - **Ferramenta:** Claude
 - **Contexto/tarefa:** revisar os programas de teste do CP5, escritos por mim a partir das regras da Parte 1, e as saídas esperadas.
 - **Prompt (resumo):** envio dos programas e pergunta sobre o formato do arquivo esperado;
@@ -142,3 +142,18 @@
   - decisao-argumentos: acrescentado um caso recusado (double passado para parâmetro int); valido-completo: acrescentada uma constante global;
   - o formato das mensagens de erro e de aviso
   - as saídas esperadas, derivadas das regras da Parte 1
+
+### 2026-11-23 — Revisões da implementação (Parte 2)
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** implementação do verificador em passos (expressões, comandos, return e chamadas, retornaSempre, variáveis sem valor, modo `--tipos`), com revisão de cada passo antes do seguinte.
+- **Prompt (resumo):** envio do código e da saída do `mvn clean test` a cada passo; "qual o próximo passo?".
+- **O que foi gerado:**
+  - a ordem dos passos e, para cada um, a lista das regras da Parte 1 que ele cobre e os testes a ativar;
+  - sugestões de projeto que eu segui: retornaSempre como um `Visitor<Boolean>` separado (o enunciado proíbe `instanceof`); o tipo declarado lido com `visitPrimitiveType` devolvendo `Types.of`; um helper só para `CallExpr` e `CallCmd`; o conjunto de variáveis sem valor guardando o nó da declaração e não o nome (por causa do sombreamento), com um conjunto separado para avisar uma vez só;
+  - o texto de três mensagens que a Parte 1 não tinha fixado: atribuição a constante/função, read de tipo não legível e chamada de algo que não é função.
+
+### 2026-11-23 — README do CP5
+- **Ferramenta:** Claude
+- **Contexto/tarefa:** escrever as seções do README pedidas na entrega.
+- **Prompt (resumo):** "Faça o rascunho das seções do README a partir do código."
+- **O que foi gerado:** rascunho de "Como os tipos estão representados", "Onde ficam as regras" (regra ou decisão → método) e "Formato das mensagens", e o parágrafo sobre o modo `--tipos`.
