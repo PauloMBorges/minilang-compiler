@@ -1,6 +1,5 @@
 package br.ufu.compiladores.ast;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
