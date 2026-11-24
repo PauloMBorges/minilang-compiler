@@ -8,7 +8,9 @@ import br.ufu.compiladores.types.Type;   // tipo semantico (nao o ast.Type)
 import br.ufu.compiladores.types.Types;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
  * Verificador de tipos (Checkpoint 5, Secao 4 do enunciado).
@@ -26,7 +28,8 @@ public class TypeChecker implements Visitor<Type> {
     private String funcAtual;       // nome da funcao/procedimento sendo verificado
     private Type retornoAtual;      // tipo de retorno dela (VOID para procedimento)
 
-    // TODO (6.5): variaveis que podem estar sem valor.
+    private Set<Node> semValor = new HashSet<>();        // declaracoes que podem estar sem valor
+    private final Set<Node> avisados = new HashSet<>();  // um aviso por variavel
 
     /** Erros de tipo, na ordem em que foram encontrados. */
     public List<SemanticError> getErrors() {
@@ -128,6 +131,8 @@ public class TypeChecker implements Visitor<Type> {
                 erro(n.line(), "tipos incompatíveis na inicialização de '" + n.id + "': "
                         + declType + " recebe " + initType);
             }
+        } else if (funcAtual != null) {
+            semValor.add(n);
         }
         return Type.VOID;
     }
@@ -136,12 +141,14 @@ public class TypeChecker implements Visitor<Type> {
     public Type visitFuncDecl(FuncDecl n) {
         funcAtual = n.id;
         retornoAtual = n.type.accept(this);
+        semValor = new HashSet<>();
         for (Cmd c : n.body.cmds) {
             c.accept(this);
         }
         if (retornoAtual != Type.VOID && !n.body.accept(retornaSempre)) {
             erro(n.line(), "função '" + n.id + "' pode terminar sem 'return'");
         }
+        funcAtual = null;
         return Type.VOID;
     }
 
@@ -149,9 +156,11 @@ public class TypeChecker implements Visitor<Type> {
     public Type visitProcDecl(ProcDecl n) {
         funcAtual = n.id;
         retornoAtual = Type.VOID;
+        semValor = new HashSet<>();
         for (Cmd c : n.body.cmds) {
             c.accept(this);
         }
+        funcAtual = null;
         return Type.VOID;
     }
 
@@ -191,19 +200,37 @@ public class TypeChecker implements Visitor<Type> {
             erro(n.line(), "tipos incompatíveis na atribuição a '" + n.id + "': "
                     + targetType + " recebe " + exprType);
         }
+        if (n.decl != null) {
+            semValor.remove(n.decl.declNode);
+        }
         return Type.VOID;
     }
 
     @Override
     public Type visitIf(IfCmd n) {
         condicao(n.cond, "if");
+        Set<Node> antes = semValor;
+        Set<Node> depois = new HashSet<>();
+
+        semValor = new HashSet<>(antes);
         n.thenCmd.accept(this);
+        depois.addAll(semValor);
+
         for (ElifBranch elif : n.elifs) {
+            semValor = new HashSet<>(antes);
             elif.accept(this);
+            depois.addAll(semValor);
         }
+
         if (n.elseCmd != null) {
+            semValor = new HashSet<>(antes);
             n.elseCmd.accept(this);
+            depois.addAll(semValor);
+        } else {
+            depois.addAll(antes);
         }
+
+        semValor = depois;
         return Type.VOID;
     }
 
@@ -217,7 +244,10 @@ public class TypeChecker implements Visitor<Type> {
     @Override
     public Type visitWhile(WhileCmd n) {
         condicao(n.cond, "while");
+        Set<Node> antes = semValor;
+        semValor = new HashSet<>(antes);
         n.body.accept(this);
+        semValor = antes;
         return Type.VOID;
     }
 
@@ -259,6 +289,9 @@ public class TypeChecker implements Visitor<Type> {
                 && targetType != Type.CHAR) {
             erro(n.line(), "'read' não aceita '" + n.id + "', que é " + targetType);
         }
+        if (n.decl != null) {
+            semValor.remove(n.decl.declNode);
+        }
         return Type.VOID;
     }
 
@@ -297,6 +330,9 @@ public class TypeChecker implements Visitor<Type> {
         if (n.decl.category == SymbolCategory.FUNC || n.decl.category == SymbolCategory.PROC) {
             erro(n.line(), "'" + n.id + "' é " + nomeCategoria(n.decl.category) + ": não pode ser usado sem parênteses");
             return n.type = Type.ERROR;
+        }
+        if (semValor.contains(n.decl.declNode) && avisados.add(n.decl.declNode)) {
+            aviso(n.line(), "'" + n.id + "' pode estar sem valor");
         }
         return n.type = n.decl.type;
     }

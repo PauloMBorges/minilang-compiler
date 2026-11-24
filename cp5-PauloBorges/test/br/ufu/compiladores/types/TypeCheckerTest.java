@@ -7,7 +7,6 @@ import br.ufu.compiladores.symbols.SemanticError;
 import br.ufu.compiladores.visitor.IdentificationVisitor;
 import br.ufu.compiladores.visitor.TypeChecker;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
@@ -34,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * tipo e os avisos, um por linha, ordenados pela linha do programa (a ordem
  * de cada passada e mantida para a mesma linha).
  *
- * Tudo desativado (@Disabled) ate o verificador e os arquivos existirem.
  */
 public class TypeCheckerTest {
 
@@ -135,7 +133,7 @@ public class TypeCheckerTest {
     //  VARIAVEIS SEM VALOR (avisos)
     // ------------------------------------------------------------------
 
-    @Disabled("TODO") @Test void variaveisSemValor() throws IOException { confere("sem-valor"); }
+    @Test void variaveisSemValor() throws IOException { confere("sem-valor"); }
 
     // ------------------------------------------------------------------
     //  UM PROGRAMA POR DECISAO DE PROJETO (Parte 1)
