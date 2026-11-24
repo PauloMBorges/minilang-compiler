@@ -157,7 +157,7 @@ public class TypeCheckerTest {
 
     @Test void decisaoArgumentos() throws IOException { confere("decisao-argumentos"); }
 
-    @Disabled("TODO") @Test void decisaoReturnCaminhos() throws IOException { confere("decisao-return-caminhos"); }
+    @Test void decisaoReturnCaminhos() throws IOException { confere("decisao-return-caminhos"); }
 
     @Test void decisaoSobrecarga() throws IOException { confere("decisao-sobrecarga"); }
 

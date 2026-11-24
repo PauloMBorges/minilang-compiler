@@ -21,6 +21,7 @@ public class TypeChecker implements Visitor<Type> {
 
     private final List<SemanticError> errors = new ArrayList<>();
     private final List<SemanticError> warnings = new ArrayList<>();
+    private final RetornaSempre retornaSempre = new RetornaSempre();
 
     private String funcAtual;       // nome da funcao/procedimento sendo verificado
     private Type retornoAtual;      // tipo de retorno dela (VOID para procedimento)
@@ -137,6 +138,9 @@ public class TypeChecker implements Visitor<Type> {
         retornoAtual = n.type.accept(this);
         for (Cmd c : n.body.cmds) {
             c.accept(this);
+        }
+        if (retornoAtual != Type.VOID && !n.body.accept(retornaSempre)) {
+            erro(n.line(), "função '" + n.id + "' pode terminar sem 'return'");
         }
         return Type.VOID;
     }
